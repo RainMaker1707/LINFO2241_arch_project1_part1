@@ -7,34 +7,36 @@
 
 int main(int argc, char **argv){
     printf("Client running...\n");
+
+    /// Arguments parsing
     int opt;
-    int key_size = 0;
-    int request_rate = 0;
-    int request_time = 0;
+    int key_size;
+    int request_rate;
+    int request_time;
     int port;
-    char target_ip[15] = "255.255.255.255";
+    char target_ip[15];
 
     char* err;
     while((opt = getopt(argc, argv, "k:r:t")) != -1){
         switch(opt){
             case 'k':
                 key_size = strtol(argv[optind-1], &err, 10);
-                if (*err != '\0'){
-                    printf("Arguments error: Key size (-k) is not a number\n");
+                if (*err != '\0' || key_size <= 0){
+                    printf("Arguments error: Key size (-k) should be a positive number\n");
                     return EXIT_FAILURE;
                 }
                 break;
             case 'r':
                 request_rate = strtol(argv[optind-1], &err, 10);
-                if (*err != '\0'){
-                    printf("Arguments error: Request rate (-r) is not a number\n");
+                if (*err != '\0' || request_rate <= 0){
+                    printf("Arguments error: Request rate (-r) should be a positive number\n");
                     return EXIT_FAILURE;
                 }
                 break;
             case 't':
                 request_time = strtol(argv[optind], &err,10);
-                if (*err != '\0'){
-                    printf("Arguments error: Request time (-t) is not a number\n");
+                if (*err != '\0' || request_time <= 0){
+                    printf("Arguments error: Request time (-t) should be a positive number\n");
                     return EXIT_FAILURE;
                 }
                 break;
@@ -63,9 +65,13 @@ int main(int argc, char **argv){
         index++;
     }
     port = strtol(port_char, &err, 10);
-    printf("Arguments:\n\tTarget IP: \t%s\n\tPort: \t\t%i\n\tKey size: \t%i\n"
+
+    printf("Arguments:\n\tTarget IP: \t\t%s\n\tPort: \t\t\t%i\n\tKey size: \t\t%i\n"
            "\tRequest rate:   %i\n\tRequest time:   %i\n",
            target_ip, port, key_size, request_rate, request_time);
+
+    /// CODE the real client here
+
     return EXIT_SUCCESS;
 }
 
