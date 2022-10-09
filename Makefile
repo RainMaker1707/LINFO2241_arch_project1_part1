@@ -19,9 +19,11 @@ $(CLIENT): $(CLIENT_OBJECTS)
 	$(CC) $(CLIENT_OBJECTS) -o $(CLIENT).e $(LDFLAGS)
 
 server_run:
+	make $(SERVER)
 	./server.e # add args here
 
 client_run:
+	make $(CLIENT)
 	./client.e # add args here
 
 clean:
