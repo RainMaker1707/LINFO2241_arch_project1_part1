@@ -11,8 +11,18 @@ CLIENT_OBJECTS = $(CLIENT_SOURCES:.c=.o)
 SERVER = server
 CLIENT = client
 # add args here
-SERVER_ARGS =
-CLIENT_ARGS = -k 128 -r 1000 -t 10 127.0.0.1:2241
+
+THREAD_N = 4
+SIZE = 1024
+PORT = 2241
+SERVER_ARGS = -j $(THREAD_N) -s $(SIZE) -p $(PORT)
+
+KEY_SIZE = 128
+REQUEST_RATE = 1000
+TIME = 10
+IP = 127.0.0.1
+PORT = 2241
+CLIENT_ARGS = -k $(KEY_SIZE) -r $(REQUEST_RATE) -t $(TIME) $(IP):$(PORT)
 
 #################################
 ##  Here starts make commands  ##
