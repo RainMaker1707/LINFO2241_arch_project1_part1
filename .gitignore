@@ -1,3 +1,6 @@
 
 .idea/
 IDEA/
+
+*.o
+*.e
