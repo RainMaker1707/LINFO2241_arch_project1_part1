@@ -12,7 +12,7 @@ SERVER = server
 CLIENT = client
 # add args here
 SERVER_ARGS =
-CLIENT_ARGS =
+CLIENT_ARGS = -k 128 -r 1000 -t 10 127.0.0.1:2241
 
 #################################
 ##  Here starts make commands  ##
