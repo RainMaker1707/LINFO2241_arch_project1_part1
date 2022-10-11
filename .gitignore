@@ -3,4 +3,5 @@
 IDEA/
 
 *.o
-*.e
+client
+server
