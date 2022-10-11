@@ -39,6 +39,8 @@ int main(int argc, char **argv){
                     return EXIT_FAILURE;
                 }
                 break;
+            default:
+                printf("Argument Error: one argument is not supported.\n");
         }
     }
     printf("Arguments:\n\tThread number: \t%i\n\tFile size: \t\t%i\n\tPort: \t\t\t%i\n",
