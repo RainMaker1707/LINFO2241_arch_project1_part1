@@ -17,7 +17,7 @@ int main(int argc, char **argv){
 
     int index = 1;
     char* err;
-    while(index < argc){
+    while(index < argc-1){ // -1 for ip on the tail
         char cmd = argv[index++][1];
         switch(cmd){
             case 'k':
@@ -43,7 +43,7 @@ int main(int argc, char **argv){
                 break;
         }
     }
-    char *ip_and_port = argv[optind+1];
+    char *ip_and_port = argv[index];
     char delim = ':';
     index = 0;
     int end = strlen(ip_and_port);
