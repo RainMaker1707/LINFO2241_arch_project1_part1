@@ -44,6 +44,7 @@ int main(int argc, char **argv){
     printf("Arguments:\n\tThread number: \t%i\n\tFile size: \t\t%i\n\tPort: \t\t\t%i\n",
            thread_n, file_size, port);
 
+
     /// Code the real server here
     return EXIT_SUCCESS;
 }
