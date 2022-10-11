@@ -9,32 +9,33 @@ int main(int argc, char **argv){
     printf("Client running...\n");
 
     /// Arguments parsing
-    int opt;
     int key_size;
     int request_rate;
     int request_time;
     int port;
     char target_ip[15];
 
+    int index = 1;
     char* err;
-    while((opt = getopt(argc, argv, "k:r:t")) != -1){
-        switch(opt){
+    while(index < argc){
+        char cmd = argv[index++][1];
+        switch(cmd){
             case 'k':
-                key_size = strtol(argv[optind-1], &err, 10);
+                key_size = strtol(argv[index++], &err, 10);
                 if (*err != '\0' || key_size <= 0){
                     printf("Arguments error: Key size (-k) should be a positive number\n");
                     return EXIT_FAILURE;
                 }
                 break;
             case 'r':
-                request_rate = strtol(argv[optind-1], &err, 10);
+                request_rate = strtol(argv[index++], &err, 10);
                 if (*err != '\0' || request_rate <= 0){
                     printf("Arguments error: Request rate (-r) should be a positive number\n");
                     return EXIT_FAILURE;
                 }
                 break;
             case 't':
-                request_time = strtol(argv[optind], &err,10);
+                request_time = strtol(argv[index++], &err,10);
                 if (*err != '\0' || request_time <= 0){
                     printf("Arguments error: Request time (-t) should be a positive number\n");
                     return EXIT_FAILURE;
@@ -44,7 +45,7 @@ int main(int argc, char **argv){
     }
     char *ip_and_port = argv[optind+1];
     char delim = ':';
-    int index = 0;
+    index = 0;
     int end = strlen(ip_and_port);
     bool before = true;
     char port_char[5];
