@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-char* encrypt_file(int key_size, char* key, int file_size, char* file);
+void encrypt_file(int key_size, char* key, int file_size, char* file, char* encrypted_file);
 
 
 #endif //LINFO2241_ARCH_PROJECT1_PART1_CRYPT_TOOLS_H

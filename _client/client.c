@@ -3,6 +3,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+#include <arpa/inet.h> // inet_addr()
+#include <netdb.h>
+#include <strings.h> // bzero()
+#include <sys/socket.h>
+#include <unistd.h> // read(), write(), close()
 #include "../shared/crypt_tools.h"
 
 int main(int argc, char **argv){
@@ -75,6 +80,51 @@ int main(int argc, char **argv){
            target_ip, port, key_size, request_rate, request_time);
 
     /// CODE the real client here
+    int sockfd;
+    struct sockaddr_in servaddr;
+
+    // socket create and verification
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1) {
+        printf("socket creation failed...\n");
+        exit(0);
+    }
+    else {
+        printf("Socket successfully created..\n");
+    }
+    bzero(&servaddr, sizeof(servaddr));
+
+    // assign IP, PORT
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = inet_addr(target_ip);
+    servaddr.sin_port = htons(port);
+
+    // connect the client socket to server socket
+    if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))
+        != 0) {
+        printf("connection with the server failed...\n");
+        exit(0);
+    }
+    else {
+        printf("connected to the server..\n");
+    }
+
+    int my_index = 85;
+    int my_key_size = 2;
+    char *key = "ABCD";
+
+    char *buff = (char*)malloc(sizeof(char)*12);
+    memcpy(buff, &my_index, sizeof(char)*4);
+    memcpy(buff+(sizeof(char)*4), &my_key_size, sizeof(char)*4);
+    memcpy(buff+(sizeof(char)*8), key, sizeof(char)*4);
+
+    printf("SEND :\n"
+           "KEY : %s\n",key);
+
+    write(sockfd, buff, sizeof(char)*12);
+
+    // close the socket
+    close(sockfd);
 
     return EXIT_SUCCESS;
 }

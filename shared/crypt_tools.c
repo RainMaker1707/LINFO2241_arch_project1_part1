@@ -1,7 +1,6 @@
 #include "crypt_tools.h"
 
-char* encrypt_file(int key_size, char* key, int file_size, char* file){
-    char *encrypted_file = (char*)calloc(pow(file_size,2),sizeof(char));
+void encrypt_file(int key_size, char* key, int file_size, char* file, char* encrypted_file){
     int nb_steps_per_dim = file_size / key_size;
 
     // Multiple matrix computations
@@ -18,6 +17,4 @@ char* encrypt_file(int key_size, char* key, int file_size, char* file){
            }
         }
     }
-
-    return encrypted_file;
 }
