@@ -224,7 +224,6 @@ int main(int argc, char **argv){
         usleep(((float)1/(float)request_rate)*1000000);
         n++;
     }
-    printf("Queue size: %d\n", thread_list->size);
     return EXIT_SUCCESS;
 }
 
