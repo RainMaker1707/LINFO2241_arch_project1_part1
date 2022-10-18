@@ -1,14 +1,87 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdbool.h>
-#include <arpa/inet.h> // inet_addr()
-#include <netdb.h>
-#include <strings.h> // bzero()
-#include <sys/socket.h>
-#include <unistd.h> // read(), write(), close()
-#include "../shared/crypt_tools.h"
+#include "client.h"
+
+int thread_job(thread_args* args){
+    struct sockaddr_in servaddr = args->servaddr;
+    int key_size = args->key_size;
+    int sockfd;
+    int request_size = (key_size*key_size)+8;
+
+    // socket create and verification
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1) {
+        printf("socket creation failed...\n");
+        exit(0);
+    }
+    else {
+        printf("Socket successfully created..\n");
+    }
+
+    // connect the client socket to server socket
+    if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))
+        != 0) {
+        printf("Connection with the server failed...\n");
+        exit(0);
+    }
+    else {
+        printf("Connected to the server..\n");
+    }
+
+    int index = 90;
+    char *key = (char*)malloc(sizeof(char)*key_size*key_size);
+
+    // Fill key with "a" to test
+    for(int i=0 ; i<key_size*key_size ; i++){
+        key[i] = 'a';
+    }
+
+    char *buff = (char*)malloc(sizeof(char)*request_size);
+    memcpy(buff, &index, sizeof(char)*4);
+    memcpy(buff+(sizeof(char)*4), &key_size, sizeof(char)*4);
+    memcpy(buff+(sizeof(char)*8), key, sizeof(char)*key_size*key_size);
+
+    printf("KEY :\n");
+    for(int i=0 ; i<key_size*key_size ; i++){
+        printf("%c",key[i]);
+    }
+    printf("\n");
+
+    write(sockfd, buff, sizeof(char)*request_size);
+
+    uint8_t *error = malloc(sizeof(char));
+    if(!error) return EXIT_FAILURE;
+    read(sockfd, error, sizeof(char)*1);
+    if(*error != 0){
+        printf("Server send error code: %u\n", *error);
+        return EXIT_FAILURE;
+    }
+
+
+    uint32_t *file_size = malloc(sizeof(char)*4);
+    if(!file_size) return EXIT_FAILURE;
+    read(sockfd, file_size, sizeof(char)*4);
+    if(*file_size == 0){
+        printf("No file received: file size = 0\n");
+        return EXIT_FAILURE;
+    }
+    printf("\nServer answer:\n");
+    printf("Error code: %u\n", *error);
+    printf("File size:  %u\n", *file_size);
+
+    char *ans = malloc(sizeof(char)* (*file_size));
+    if(!ans) return EXIT_FAILURE;
+    read(sockfd, ans, sizeof(char)* (*file_size));
+    for(int i=0 ; i<(int)(*file_size) ; i++){
+        printf("%c",ans[i]);
+    }
+    printf("\n");
+
+
+    // close the socket
+    close(sockfd);
+
+    return EXIT_SUCCESS;
+}
+
 
 int main(int argc, char **argv){
     printf("Client running...\n");
@@ -79,88 +152,28 @@ int main(int argc, char **argv){
            target_ip, port, key_size, request_rate, request_time);
 
     /// CODE the real client here
-    int sockfd;
     struct sockaddr_in servaddr;
-    int request_size = (key_size*key_size)+8;
-
-    // socket create and verification
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd == -1) {
-        printf("socket creation failed...\n");
-        exit(0);
-    }
-    else {
-        printf("Socket successfully created..\n");
-    }
-    bzero(&servaddr, sizeof(servaddr));
 
     // assign IP, PORT
+    bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = inet_addr(target_ip);
     servaddr.sin_port = htons(port);
 
-    // connect the client socket to server socket
-    if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))
-        != 0) {
-        printf("Connection with the server failed...\n");
-        exit(0);
-    }
-    else {
-        printf("Connected to the server..\n");
-    }
-
-    int my_index = 90;
-    char *key = (char*)malloc(sizeof(char)*key_size*key_size);
-
-    // Fill key with "a" to test
-    for(int i=0 ; i<key_size*key_size ; i++){
-        key[i] = 'a';
+    // Launch threads
+    thread_args args;
+    args.key_size = key_size;
+    args.servaddr = servaddr;
+    pthread_t *ids = (pthread_t*)malloc(sizeof(pthread_t)*1);
+    for(int i=0 ; i<1 ; i++){
+        pthread_create(&ids[i], NULL, (void*)thread_job, &args);
     }
 
-    char *buff = (char*)malloc(sizeof(char)*request_size);
-    memcpy(buff, &my_index, sizeof(char)*4);
-    memcpy(buff+(sizeof(char)*4), &key_size, sizeof(char)*4);
-    memcpy(buff+(sizeof(char)*8), key, sizeof(char)*key_size*key_size);
-
-    printf("KEY :\n");
-    for(int i=0 ; i<key_size*key_size ; i++){
-        printf("%c",key[i]);
-    }
-    printf("\n");
-
-    write(sockfd, buff, sizeof(char)*request_size);
-
-    uint8_t *error = malloc(sizeof(char));
-    if(!error) return EXIT_FAILURE;
-    read(sockfd, error, sizeof(char)*1);
-    if(*error != 0){
-        printf("Server send error code: %u\n", *error);
-        return EXIT_FAILURE;
+    for(int i=0 ; i<1 ; i++){
+        pthread_join(ids[i], NULL);
     }
 
 
-    uint32_t *file_size = malloc(sizeof(char)*4);
-    if(!file_size) return EXIT_FAILURE;
-    read(sockfd, file_size, sizeof(char)*4);
-    if(*file_size == 0){
-        printf("No file received: file size = 0\n");
-        return EXIT_FAILURE;
-    }
-    printf("\nServer answer:\n");
-    printf("Error code: %u\n", *error);
-    printf("File size:  %u\n", *file_size);
-
-    char *ans = malloc(sizeof(char)* (*file_size));
-    if(!ans) return EXIT_FAILURE;
-    read(sockfd, ans, sizeof(char)* (*file_size));
-    for(int i=0 ; i<(int)(*file_size) ; i++){
-        printf("%c",ans[i]);
-    }
-    printf("\n");
-
-
-    // close the socket
-    close(sockfd);
 
     return EXIT_SUCCESS;
 }
