@@ -13,7 +13,7 @@ int thread_job(thread_args* args){
         exit(0);
     }
     else {
-        printf("Socket successfully created..\n");
+        //printf("Socket successfully created..\n");
     }
 
     // connect the client socket to server socket
@@ -23,7 +23,7 @@ int thread_job(thread_args* args){
         exit(0);
     }
     else {
-        printf("Connected to the server..\n");
+        //printf("Connected to the server..\n");
     }
 
     int index = 90;
@@ -65,7 +65,7 @@ int thread_job(thread_args* args){
     if(!ans) return EXIT_FAILURE;
     read(sockfd, ans, sizeof(char)* (*file_size));
     gettimeofday(&end, NULL);
-    printf("Elapsed time between send and receive: %ld µs",
+    printf("Elapsed time between send and receive: %ld µs\n",
            ((end.tv_sec - start.tv_sec)*1000000+( end.tv_usec - start.tv_usec)));
 
 
@@ -164,15 +164,26 @@ int main(int argc, char **argv){
     thread_args args;
     args.key_size = key_size;
     args.servaddr = servaddr;
-    pthread_t *ids = (pthread_t*)malloc(sizeof(pthread_t)*1);
-    for(int i=0 ; i<1 ; i++){
-        pthread_create(&ids[i], NULL, (void*)thread_job, &args);
-    }
 
-    for(int i=0 ; i<1 ; i++){
-        pthread_join(ids[i], NULL);
-    }
 
+    struct timeval start, current;
+    gettimeofday(&start, NULL);
+
+    int n = 0;
+    while(1) {
+        gettimeofday(&current, NULL);
+        if(current.tv_sec - start.tv_sec >= request_time) {
+            printf("Run out of time: %d s\n", request_time);
+            printf("Total threads number: %d\n", n);
+            /// TODO join linked list of threads
+            break;
+        }
+        pthread_t *ids = (pthread_t *) malloc(sizeof(pthread_t));
+        pthread_create(ids, NULL, (void *) thread_job, &args);
+        /// TODO add threads to linked list
+        usleep(((float)1/(float)request_rate)*1000000);
+        n++;
+    }
     return EXIT_SUCCESS;
 }
 

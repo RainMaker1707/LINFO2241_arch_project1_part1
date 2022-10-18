@@ -67,6 +67,7 @@ int thread_job(thread_args* args){
         // Send response
         write(client_sock_fd, buff, sizeof(char)*response_size);
         free(buff);
+        printf("Answer sent\n");
 
         // Close connection
         close(client_sock_fd);
