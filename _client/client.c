@@ -60,7 +60,6 @@ int main(int argc, char **argv){
                         before = false;
                         target_ip[i] = '\0';
                         sub = i+1;
-
                     }else{
                         if(before){
                             target_ip[i] = ip_and_port[i];
@@ -102,11 +101,11 @@ int main(int argc, char **argv){
     // connect the client socket to server socket
     if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))
         != 0) {
-        printf("connection with the server failed...\n");
+        printf("Connection with the server failed...\n");
         exit(0);
     }
     else {
-        printf("connected to the server..\n");
+        printf("Connected to the server..\n");
     }
 
     int my_index = 85;
@@ -118,13 +117,39 @@ int main(int argc, char **argv){
     memcpy(buff+(sizeof(char)*4), &my_key_size, sizeof(char)*4);
     memcpy(buff+(sizeof(char)*8), key, sizeof(char)*4);
 
-    printf("SEND :\n"
-           "KEY : %s\n",key);
+    printf("KEY : %s\n", key);
 
     write(sockfd, buff, sizeof(char)*12);
 
+
+    uint8_t *error = malloc(sizeof(char));
+    if(!error) return EXIT_FAILURE;
+    read(sockfd, error, sizeof(char)*1);
+    if(*error != 0){
+        printf("Server send error code: %u\n", *error);
+        return EXIT_FAILURE;
+    }
+
+
+    uint32_t *file_size = malloc(sizeof(char)*4);
+    if(!file_size) return EXIT_FAILURE;
+    read(sockfd, file_size, sizeof(char)*4);
+    if(*file_size == 0){
+        printf("No file received: file size = 0\n");
+        return EXIT_FAILURE;
+    }
+    printf("\n\nServer answer:\n");
+    printf("Error code: %u\n", *error);
+    printf("File size:  %u\n", *file_size);
+
+    char* ans = malloc(sizeof(char)* *file_size);
+    if(!ans) return EXIT_FAILURE;
+    read(sockfd, ans, sizeof(char)* *file_size);
+    printf("%c, %c, %c\n", ans[0], ans[1024], ans[*file_size-1000]);
+
+
     // close the socket
-    close(sockfd);
+    //close(sockfd);
 
     return EXIT_SUCCESS;
 }

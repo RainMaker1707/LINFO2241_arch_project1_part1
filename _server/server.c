@@ -47,21 +47,20 @@ int thread_job(thread_args* args){
             printf("Bytes received from client : %i\n"
                    "INDEX : %i\n"
                    "KEY_SIZE : %i\n"
-                   "KEY : %s\n"
-                   "FILE : %c,%c,%c,%c\n"
-                   "ENCR FILE : %c,%c,%c,%c\n",nb_bytes_read, file_index, key_size, key, files[file_index][0], files[file_index][1], files[file_index][2], files[file_index][3], encrypted_file[0], encrypted_file[1], encrypted_file[2], encrypted_file[3]);
+                   "KEY : %s\n", nb_bytes_read, file_index, key_size, key);
             err_code = 0;
+            free(key);
         }
         free(buff);
-        free(key);
-
         // Prepare response to client
         buff = (char*)malloc(sizeof(char)*response_size);
         memcpy(buff, &err_code, sizeof(char));
+        file_size = file_size * file_size; // need to send the total size
         memcpy(buff+sizeof(char), &file_size, sizeof(char)*4);
         if (err_code == 0){
-            memcpy(buff+(sizeof(char)*5), encrypted_file, sizeof(char)*file_size*file_size);
+            memcpy(buff+(sizeof(char)*5), encrypted_file, sizeof(char)*file_size);
         }
+        printf("%c, %c, %c \n", buff[5], buff[1029], buff[1024*1024+4]);
         free(encrypted_file);
 
         // Send response
@@ -119,6 +118,10 @@ int main(int argc, char **argv){
     char **files = (char**)malloc(sizeof(char*)*1000);
     for(int i=0 ; i<1000 ; i++){
         files[i] = (char*)malloc(sizeof(char)*file_size*file_size);
+        // Fill files with letters A
+        for(int j=0; j<file_size*file_size; j++){
+            files[i][j] = 'A';
+        }
     }
 
     // Socket creation
