@@ -81,6 +81,7 @@ int main(int argc, char **argv){
     /// CODE the real client here
     int sockfd;
     struct sockaddr_in servaddr;
+    int request_size = (key_size*key_size)+8;
 
     // socket create and verification
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -108,19 +109,26 @@ int main(int argc, char **argv){
         printf("Connected to the server..\n");
     }
 
-    int my_index = 85;
-    int my_key_size = 2;
-    char *key = "ABCD";
+    int my_index = 90;
+    char *key = (char*)malloc(sizeof(char)*key_size*key_size);
 
-    char *buff = (char*)malloc(sizeof(char)*12);
+    // Fill key with "a" to test
+    for(int i=0 ; i<key_size*key_size ; i++){
+        key[i] = 'a';
+    }
+
+    char *buff = (char*)malloc(sizeof(char)*request_size);
     memcpy(buff, &my_index, sizeof(char)*4);
-    memcpy(buff+(sizeof(char)*4), &my_key_size, sizeof(char)*4);
-    memcpy(buff+(sizeof(char)*8), key, sizeof(char)*4);
+    memcpy(buff+(sizeof(char)*4), &key_size, sizeof(char)*4);
+    memcpy(buff+(sizeof(char)*8), key, sizeof(char)*key_size*key_size);
 
-    printf("KEY : %s\n", key);
+    printf("KEY :\n");
+    for(int i=0 ; i<key_size*key_size ; i++){
+        printf("%c",key[i]);
+    }
+    printf("\n");
 
-    write(sockfd, buff, sizeof(char)*12);
-
+    write(sockfd, buff, sizeof(char)*request_size);
 
     uint8_t *error = malloc(sizeof(char));
     if(!error) return EXIT_FAILURE;
@@ -138,18 +146,21 @@ int main(int argc, char **argv){
         printf("No file received: file size = 0\n");
         return EXIT_FAILURE;
     }
-    printf("\n\nServer answer:\n");
+    printf("\nServer answer:\n");
     printf("Error code: %u\n", *error);
     printf("File size:  %u\n", *file_size);
 
-    char* ans = malloc(sizeof(char)* *file_size);
+    char *ans = malloc(sizeof(char)* (*file_size));
     if(!ans) return EXIT_FAILURE;
-    read(sockfd, ans, sizeof(char)* *file_size);
-    printf("%c, %c, %c\n", ans[0], ans[1024], ans[*file_size-1000]);
+    read(sockfd, ans, sizeof(char)* (*file_size));
+    for(int i=0 ; i<(int)(*file_size) ; i++){
+        printf("%c",ans[i]);
+    }
+    printf("\n");
 
 
     // close the socket
-    //close(sockfd);
+    close(sockfd);
 
     return EXIT_SUCCESS;
 }

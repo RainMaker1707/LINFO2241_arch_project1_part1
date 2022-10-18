@@ -24,11 +24,12 @@ int thread_job(thread_args* args){
         printf("Client accepted\n");
 
         // Get file index and key size from socket
-        int file_index, key_size, nb_bytes_read;
+        int file_index, key_size;
         char *buff = (char*)malloc(sizeof(char)*max_request_size);
-        nb_bytes_read = read(client_sock_fd, buff, sizeof(char)*max_request_size);
+        read(client_sock_fd, buff, sizeof(char)*max_request_size);
         memcpy(&file_index, buff, sizeof(char)*4);
         memcpy(&key_size, buff+(sizeof(char)*4), sizeof(char)*4);
+        printf("KEY SIZE : %d\n",key_size);
 
 
         // Verification on key_size
@@ -42,12 +43,18 @@ int thread_job(thread_args* args){
             // Get key from socket
             key = (char*)malloc(sizeof(char)*key_size*key_size);
             memcpy(key, buff+(sizeof(char)*8), sizeof(char)*key_size*key_size);
+            printf("KEY :\n");
+            for(int i=0 ; i<key_size*key_size ; i++){
+                printf("%c",key[i]);
+            }
+            printf("\n");
             // Encrypt file
             encrypt_file(key_size, key, file_size, files[file_index], encrypted_file);
-            printf("Bytes received from client : %i\n"
-                   "INDEX : %i\n"
-                   "KEY_SIZE : %i\n"
-                   "KEY : %s\n", nb_bytes_read, file_index, key_size, key);
+            printf("FILE TO ENCRYPT :\n");
+            for(int i=0 ; i<file_size*file_size ; i++){
+                printf("%c",files[file_index][i]);
+            }
+            printf("\n");
             err_code = 0;
             free(key);
         }
@@ -60,7 +67,11 @@ int thread_job(thread_args* args){
         if (err_code == 0){
             memcpy(buff+(sizeof(char)*5), encrypted_file, sizeof(char)*file_size);
         }
-        printf("%c, %c, %c \n", buff[5], buff[1029], buff[1024*1024+4]);
+        printf("FILE ENCRYPTED :\n");
+        for(int i=0 ; i<file_size ; i++){
+            printf("%c",encrypted_file[i]);
+        }
+        printf("\n");
         free(encrypted_file);
 
         // Send response
@@ -118,9 +129,9 @@ int main(int argc, char **argv){
     char **files = (char**)malloc(sizeof(char*)*1000);
     for(int i=0 ; i<1000 ; i++){
         files[i] = (char*)malloc(sizeof(char)*file_size*file_size);
-        // Fill files with letters A
+        // Fill files with letters A to test
         for(int j=0; j<file_size*file_size; j++){
-            files[i][j] = 'A';
+            files[i][j] = 'a';
         }
     }
 
