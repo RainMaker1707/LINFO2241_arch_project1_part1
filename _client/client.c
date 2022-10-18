@@ -1,5 +1,42 @@
 #include "client.h"
 
+list* list_init(){
+    list *l = malloc(sizeof(list));
+    l->size = 0;
+    l->current = NULL;
+    l->head = NULL;
+    l->tail = NULL;
+    return l;
+}
+
+void list_push(list *l, pthread_t* id){
+    struct node *n = malloc(sizeof(node));
+    if(!n) return;
+    n->id = id;
+    n->next = NULL;
+    if(l->head == NULL) {
+        l->head = n;
+        l->current = l->head;
+        l->tail = l->head;
+    }else{
+        l->tail->next = n;
+        l->tail = l->tail->next;
+    }
+    l->size++;
+}
+
+void join_and_free_threads_list(list *l){
+    while(l->current != NULL){
+        pthread_t* to_free = l->current->id;
+        node* trash = l->current;
+        l->current = l->current->next;
+        pthread_join(*to_free, NULL);
+        free(to_free);
+        free(trash);
+    }
+    free(l);
+}
+
 int thread_job(thread_args* args){
     struct sockaddr_in servaddr = args->servaddr;
     int key_size = args->key_size;
@@ -170,20 +207,24 @@ int main(int argc, char **argv){
     gettimeofday(&start, NULL);
 
     int n = 0;
+    list *thread_list = list_init();
     while(1) {
         gettimeofday(&current, NULL);
         if(current.tv_sec - start.tv_sec >= request_time) {
             printf("Run out of time: %d s\n", request_time);
             printf("Total threads number: %d\n", n);
-            /// TODO join linked list of threads
+            join_and_free_threads_list(thread_list);
             break;
         }
-        pthread_t *ids = (pthread_t *) malloc(sizeof(pthread_t));
-        pthread_create(ids, NULL, (void *) thread_job, &args);
-        /// TODO add threads to linked list
+        pthread_t *id = (pthread_t *) malloc(sizeof(pthread_t));
+        pthread_create(id, NULL, (void *) thread_job, &args);
+        //add threads to linked list
+        list_push(thread_list, id);
+        // handle request rate by sleeping interval
         usleep(((float)1/(float)request_rate)*1000000);
         n++;
     }
+    printf("Queue size: %d\n", thread_list->size);
     return EXIT_SUCCESS;
 }
 

@@ -20,6 +20,21 @@ typedef struct {
     struct sockaddr_in servaddr;
 } thread_args;
 
+typedef struct node{
+    pthread_t* id;
+    struct node* next;
+} node;
+
+typedef struct {
+    node* head;
+    node* current;
+    node* tail;
+    int size;
+} list;
+
 int thread_job(thread_args* args);
+
+list* list_init();
+void list_push(list *l, pthread_t* id);
 
 #endif //LINFO2241_ARCH_PROJECT1_PART1_CLIENT_H
