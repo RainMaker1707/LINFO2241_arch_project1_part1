@@ -26,6 +26,7 @@ int thread_job(thread_args* args){
         // Get file index and key size from socket
         int file_index, key_size;
         char *buff = (char*)malloc(sizeof(char)*max_request_size);
+        if(!buff) return EXIT_FAILURE;
         read(client_sock_fd, buff, sizeof(char)*max_request_size);
         memcpy(&file_index, buff, sizeof(char)*4);
         memcpy(&key_size, buff+(sizeof(char)*4), sizeof(char)*4);
@@ -35,6 +36,7 @@ int thread_job(thread_args* args){
         // Verification on key_size
         char err_code;
         char *encrypted_file = (char*)malloc(sizeof(char)*file_size*file_size);
+        if(!encrypted_file) return EXIT_FAILURE;
         char *key = NULL;
         if (file_size % key_size != 0 || key_size > file_size){
             printf("Key Error : the key size must divide the file size and can not exceed it.");
@@ -42,43 +44,31 @@ int thread_job(thread_args* args){
         } else {
             // Get key from socket
             key = (char*)malloc(sizeof(char)*key_size*key_size);
+            if(!key) return EXIT_FAILURE;
             memcpy(key, buff+(sizeof(char)*8), sizeof(char)*key_size*key_size);
-            printf("KEY :\n");
-            for(int i=0 ; i<key_size*key_size ; i++){
-                printf("%c",key[i]);
-            }
-            printf("\n");
             // Encrypt file
             encrypt_file(key_size, key, file_size, files[file_index], encrypted_file);
-            printf("FILE TO ENCRYPT :\n");
-            for(int i=0 ; i<file_size*file_size ; i++){
-                printf("%c",files[file_index][i]);
-            }
-            printf("\n");
             err_code = 0;
             free(key);
         }
         free(buff);
+
         // Prepare response to client
         buff = (char*)malloc(sizeof(char)*response_size);
+        if(!buff) return EXIT_FAILURE;
         memcpy(buff, &err_code, sizeof(char));
         file_size = file_size * file_size; // need to send the total size
         memcpy(buff+sizeof(char), &file_size, sizeof(char)*4);
         if (err_code == 0){
             memcpy(buff+(sizeof(char)*5), encrypted_file, sizeof(char)*file_size);
         }
-        printf("FILE ENCRYPTED :\n");
-        for(int i=0 ; i<file_size ; i++){
-            printf("%c",encrypted_file[i]);
-        }
-        printf("\n");
         free(encrypted_file);
 
         // Send response
         write(client_sock_fd, buff, sizeof(char)*response_size);
-
         free(buff);
 
+        // Close connection
         close(client_sock_fd);
     }
 }
