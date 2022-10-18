@@ -28,24 +28,21 @@ int thread_job(thread_args* args){
 
     int index = 90;
     char *key = (char*)malloc(sizeof(char)*key_size*key_size);
-
+    if(!key) return EXIT_FAILURE;
     // Fill key with "a" to test
     for(int i=0 ; i<key_size*key_size ; i++){
         key[i] = 'a';
     }
 
     char *buff = (char*)malloc(sizeof(char)*request_size);
+    if(!buff) return EXIT_FAILURE;
     memcpy(buff, &index, sizeof(char)*4);
     memcpy(buff+(sizeof(char)*4), &key_size, sizeof(char)*4);
     memcpy(buff+(sizeof(char)*8), key, sizeof(char)*key_size*key_size);
 
-    printf("KEY :\n");
-    for(int i=0 ; i<key_size*key_size ; i++){
-        printf("%c",key[i]);
-    }
-    printf("\n");
-
     write(sockfd, buff, sizeof(char)*request_size);
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
 
     uint8_t *error = malloc(sizeof(char));
     if(!error) return EXIT_FAILURE;
@@ -63,21 +60,24 @@ int thread_job(thread_args* args){
         printf("No file received: file size = 0\n");
         return EXIT_FAILURE;
     }
-    printf("\nServer answer:\n");
-    printf("Error code: %u\n", *error);
-    printf("File size:  %u\n", *file_size);
-
+    sleep(1);
     char *ans = malloc(sizeof(char)* (*file_size));
     if(!ans) return EXIT_FAILURE;
     read(sockfd, ans, sizeof(char)* (*file_size));
-    for(int i=0 ; i<(int)(*file_size) ; i++){
-        printf("%c",ans[i]);
-    }
-    printf("\n");
+    gettimeofday(&end, NULL);
+    printf("Elapsed time between send and receive: %ld µs",
+           ((end.tv_sec - start.tv_sec)*1000000+( end.tv_usec - start.tv_usec)));
 
 
     // close the socket
     close(sockfd);
+
+    //garbage
+    free(key);
+    free(buff);
+    free(error);
+    free(file_size);
+    free(ans);
 
     return EXIT_SUCCESS;
 }
@@ -172,8 +172,6 @@ int main(int argc, char **argv){
     for(int i=0 ; i<1 ; i++){
         pthread_join(ids[i], NULL);
     }
-
-
 
     return EXIT_SUCCESS;
 }

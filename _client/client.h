@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <arpa/inet.h> // inet_addr()
 #include <netdb.h>
+#include <sys/time.h>
 #include <strings.h> // bzero()
 #include <sys/socket.h>
 #include <unistd.h> // read(), write(), close()
