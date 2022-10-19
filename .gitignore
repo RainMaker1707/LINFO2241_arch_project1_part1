@@ -5,3 +5,4 @@ IDEA/
 *.o
 client
 server
+data_visualization/__pycache__/

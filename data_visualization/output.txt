@@ -1,0 +1,96 @@
+Client running...
+Arguments:
+	Target IP: 		127.0.0.1
+	Port: 			2241
+	Key size: 		128
+	Request rate:   9
+	Request time:   10
+Elapsed time between send and receive: 5411895 µs
+Elapsed time between send and receive: 8205647 µs
+Elapsed time between send and receive: 13159966 µs
+Elapsed time between send and receive: 15836209 µs
+Elapsed time between send and receive: 16153558 µs
+Elapsed time between send and receive: 17783346 µs
+Elapsed time between send and receive: 18872956 µs
+Elapsed time between send and receive: 19729012 µs
+Elapsed time between send and receive: 20672062 µs
+Elapsed time between send and receive: 21030998 µs
+Elapsed time between send and receive: 22190401 µs
+Elapsed time between send and receive: 22380694 µs
+Elapsed time between send and receive: 23453293 µs
+Elapsed time between send and receive: 23479652 µs
+Elapsed time between send and receive: 24104606 µs
+Elapsed time between send and receive: 24886783 µs
+Elapsed time between send and receive: 24981822 µs
+Elapsed time between send and receive: 25067959 µs
+Elapsed time between send and receive: 25259943 µs
+Elapsed time between send and receive: 25388073 µs
+Elapsed time between send and receive: 25727207 µs
+Elapsed time between send and receive: 26082533 µs
+Elapsed time between send and receive: 26106280 µs
+Elapsed time between send and receive: 26349839 µs
+Elapsed time between send and receive: 26465100 µs
+Elapsed time between send and receive: 26433060 µs
+Elapsed time between send and receive: 26847851 µs
+Elapsed time between send and receive: 26927276 µs
+Elapsed time between send and receive: 27066725 µs
+Elapsed time between send and receive: 27102533 µs
+Elapsed time between send and receive: 27202414 µs
+Elapsed time between send and receive: 27363484 µs
+Elapsed time between send and receive: 27597232 µs
+Elapsed time between send and receive: 27375050 µs
+Elapsed time between send and receive: 27668245 µs
+Elapsed time between send and receive: 27371672 µs
+Elapsed time between send and receive: 27615115 µs
+Elapsed time between send and receive: 27231012 µs
+Elapsed time between send and receive: 27389768 µs
+Elapsed time between send and receive: 27544202 µs
+Elapsed time between send and receive: 27338550 µs
+Elapsed time between send and receive: 27875216 µs
+Elapsed time between send and receive: 27304740 µs
+Elapsed time between send and receive: 27630033 µs
+Elapsed time between send and receive: 27301883 µs
+Elapsed time between send and receive: 27760170 µs
+Elapsed time between send and receive: 27376210 µs
+Elapsed time between send and receive: 27326228 µs
+Elapsed time between send and receive: 27301583 µs
+Elapsed time between send and receive: 27281177 µs
+Elapsed time between send and receive: 27130970 µs
+Elapsed time between send and receive: 27372467 µs
+Elapsed time between send and receive: 27169762 µs
+Elapsed time between send and receive: 27093644 µs
+Elapsed time between send and receive: 26957052 µs
+Elapsed time between send and receive: 27087252 µs
+Elapsed time between send and receive: 26774461 µs
+Elapsed time between send and receive: 27036550 µs
+Elapsed time between send and receive: 27163678 µs
+Elapsed time between send and receive: 26759496 µs
+Elapsed time between send and receive: 26930469 µs
+Elapsed time between send and receive: 26373245 µs
+Elapsed time between send and receive: 26833968 µs
+Elapsed time between send and receive: 26724918 µs
+Elapsed time between send and receive: 26272453 µs
+Elapsed time between send and receive: 26287028 µs
+Elapsed time between send and receive: 26762297 µs
+Elapsed time between send and receive: 26214901 µs
+Elapsed time between send and receive: 26558490 µs
+Elapsed time between send and receive: 26152960 µs
+Elapsed time between send and receive: 26044432 µs
+Elapsed time between send and receive: 25728426 µs
+Elapsed time between send and receive: 25853788 µs
+Elapsed time between send and receive: 25570595 µs
+Elapsed time between send and receive: 25693003 µs
+Elapsed time between send and receive: 26045662 µs
+Elapsed time between send and receive: 25500619 µs
+Elapsed time between send and receive: 25226149 µs
+Elapsed time between send and receive: 25474115 µs
+Elapsed time between send and receive: 25374595 µs
+Elapsed time between send and receive: 24813801 µs
+Elapsed time between send and receive: 24700882 µs
+Elapsed time between send and receive: 25044049 µs
+Elapsed time between send and receive: 24932969 µs
+Elapsed time between send and receive: 25163197 µs
+Elapsed time between send and receive: 24506039 µs
+Elapsed time between send and receive: 24635331 µs
+Run out of time: 10 s
+Total threads number: 87

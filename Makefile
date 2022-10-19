@@ -12,13 +12,13 @@ SERVER = server
 CLIENT = client
 # add args here
 
-THREAD_N = 100
+THREAD_N = 101
 SIZE = 1024
 PORT = 2241
 SERVER_ARGS = -j $(THREAD_N) -s $(SIZE) -p $(PORT)
 
 KEY_SIZE = 128
-REQUEST_RATE = 10
+REQUEST_RATE = 9
 TIME = 10
 IP = 127.0.0.1
 PORT = 2241
