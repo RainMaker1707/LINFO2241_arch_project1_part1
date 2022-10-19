@@ -90,20 +90,18 @@ int thread_job(thread_args* args){
     }
 
 
-    uint32_t *file_size = malloc(sizeof(char)*4);
-    if(!file_size) return EXIT_FAILURE;
-    read(sockfd, file_size, sizeof(char)*4);
-    if(*file_size == 0){
+    int file_size;
+    read(sockfd, &file_size, sizeof(char)*4);
+    if(file_size == 0){
         printf("No file received: file size = 0\n");
         return EXIT_FAILURE;
     }
-    sleep(1);
-    char *ans = malloc(sizeof(char)* (*file_size));
+    // sleep(1);
+    char *ans = malloc(sizeof(char)*file_size);
     if(!ans) return EXIT_FAILURE;
-    read(sockfd, ans, sizeof(char)* (*file_size));
+    read(sockfd, ans, sizeof(char)*file_size);
     gettimeofday(&end, NULL);
-    printf("Elapsed time between send and receive: %ld µs\n",
-           ((end.tv_sec - start.tv_sec)*1000000+( end.tv_usec - start.tv_usec)));
+    printf("Elapsed time between send and receive: %ld µs\n",((end.tv_sec - start.tv_sec)*1000000+( end.tv_usec - start.tv_usec)));
 
 
     // close the socket
@@ -113,7 +111,6 @@ int thread_job(thread_args* args){
     free(key);
     free(buff);
     free(error);
-    free(file_size);
     free(ans);
 
     return EXIT_SUCCESS;
@@ -123,7 +120,7 @@ int thread_job(thread_args* args){
 int main(int argc, char **argv){
     printf("Client running...\n");
 
-    /// Arguments parsing
+    // Arguments parsing
     int key_size;
     int request_rate;
     int request_time;
@@ -133,7 +130,7 @@ int main(int argc, char **argv){
 
     int index = 1;
     char* err;
-    while(index < argc){ // -1 for ip on the tail
+    while(index < argc){
         char cmd = argv[index++][1];
         switch(cmd){
             case 'k':
@@ -184,9 +181,7 @@ int main(int argc, char **argv){
         }
     }
 
-    printf("Arguments:\n\tTarget IP: \t\t%s\n\tPort: \t\t\t%i\n\tKey size: \t\t%i\n"
-           "\tRequest rate:   %i\n\tRequest time:   %i\n",
-           target_ip, port, key_size, request_rate, request_time);
+    // printf("Arguments:\n\tTarget IP: \t\t%s\n\tPort: \t\t\t%i\n\tKey size: \t\t%i\n\tRequest rate:   %i\n\tRequest time:   %i\n",target_ip, port, key_size, request_rate, request_time);
 
     /// CODE the real client here
     struct sockaddr_in servaddr;
@@ -203,14 +198,15 @@ int main(int argc, char **argv){
     args.servaddr = servaddr;
 
 
-    struct timeval start, current;
-    gettimeofday(&start, NULL);
+    struct timespec start, current, end_launch;
 
     int n = 0;
     list *thread_list = list_init();
+    clock_gettime(CLOCK_REALTIME, &start);
     while(1) {
-        gettimeofday(&current, NULL);
-        if(current.tv_sec - start.tv_sec >= request_time) {
+        clock_gettime(CLOCK_REALTIME, &current);
+        // printf("ELAPSED : %lu\n",current.tv_sec - start.tv_sec);
+        if(current.tv_sec - start.tv_sec >= (long)request_time) {
             printf("Run out of time: %d s\n", request_time);
             printf("Total threads number: %d\n", n);
             join_and_free_threads_list(thread_list);
@@ -218,11 +214,12 @@ int main(int argc, char **argv){
         }
         pthread_t *id = (pthread_t *) malloc(sizeof(pthread_t));
         pthread_create(id, NULL, (void *) thread_job, &args);
-        //add threads to linked list
+        // add threads to linked list
         list_push(thread_list, id);
-        // handle request rate by sleeping interval
-        usleep(((float)1/(float)request_rate)*1000000);
         n++;
+        clock_gettime(CLOCK_REALTIME, &end_launch);
+        // handle request rate by sleeping interval
+        usleep((((float)1/(float)request_rate)*1000000) - ((end_launch.tv_nsec - current.tv_nsec)/1000));
     }
     return EXIT_SUCCESS;
 }

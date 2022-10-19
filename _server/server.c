@@ -14,6 +14,14 @@ int thread_job(thread_args* args){
     struct sockaddr_in client;
     socklen_t len = sizeof(client);
 
+    char *buff_request = (char*)malloc(sizeof(char)*max_request_size);
+    char *buff_response = (char*)malloc(sizeof(char)*response_size);
+    char *encrypted_file = (char*)malloc(sizeof(char)*file_size*file_size);
+    char *key = (char*)malloc(sizeof(char)*file_size*file_size);
+    char err_code;
+    int file_index, key_size;
+    int total_file_size = file_size*file_size;
+
     while(true){
         // Handle client connexion
         client_sock_fd = accept(socket_fd, (struct sockaddr*)&client, &len);
@@ -21,53 +29,38 @@ int thread_job(thread_args* args){
             printf("Socket Error : unable to accept client.\n");
             return EXIT_FAILURE;
         }
-        printf("Client accepted\n");
+        // printf("\nClient accepted\n");
 
         // Get file index and key size from socket
-        int file_index, key_size;
-        char *buff = (char*)malloc(sizeof(char)*max_request_size);
-        if(!buff) return EXIT_FAILURE;
-        read(client_sock_fd, buff, sizeof(char)*max_request_size);
-        memcpy(&file_index, buff, sizeof(char)*4);
-        memcpy(&key_size, buff+(sizeof(char)*4), sizeof(char)*4);
-        printf("KEY SIZE : %d\n",key_size);
+        read(client_sock_fd, buff_request, sizeof(char)*max_request_size);
+        memcpy(&file_index, buff_request, sizeof(char)*4);
+        memcpy(&key_size, buff_request+(sizeof(char)*4), sizeof(char)*4);
+        // printf("KEY SIZE : %d\n",key_size);
 
 
         // Verification on key_size
-        char err_code;
-        char *encrypted_file = (char*)malloc(sizeof(char)*file_size*file_size);
-        if(!encrypted_file) return EXIT_FAILURE;
-        char *key = NULL;
         if (file_size % key_size != 0 || key_size > file_size){
             printf("Key Error : the key size must divide the file size and can not exceed it.");
             err_code = 1;
         } else {
             // Get key from socket
-            key = (char*)malloc(sizeof(char)*key_size*key_size);
             if(!key) return EXIT_FAILURE;
-            memcpy(key, buff+(sizeof(char)*8), sizeof(char)*key_size*key_size);
+            memcpy(key, buff_request+(sizeof(char)*8), sizeof(char)*key_size*key_size);
             // Encrypt file
             encrypt_file(key_size, key, file_size, files[file_index], encrypted_file);
             err_code = 0;
-            free(key);
         }
-        free(buff);
 
         // Prepare response to client
-        buff = (char*)malloc(sizeof(char)*response_size);
-        if(!buff) return EXIT_FAILURE;
-        memcpy(buff, &err_code, sizeof(char));
-        file_size = file_size * file_size; // need to send the total size
-        memcpy(buff+sizeof(char), &file_size, sizeof(char)*4);
+        memcpy(buff_response, &err_code, sizeof(char));
+        memcpy(buff_response+sizeof(char), &total_file_size, sizeof(char)*4);
         if (err_code == 0){
-            memcpy(buff+(sizeof(char)*5), encrypted_file, sizeof(char)*file_size);
+            memcpy(buff_response+(sizeof(char)*5), encrypted_file, sizeof(char)*total_file_size);
         }
-        free(encrypted_file);
 
         // Send response
-        write(client_sock_fd, buff, sizeof(char)*response_size);
-        free(buff);
-        printf("Answer sent\n");
+        write(client_sock_fd, buff_response, sizeof(char)*response_size);
+        // printf("Answer sent\n");
 
         // Close connection
         close(client_sock_fd);
@@ -77,7 +70,7 @@ int thread_job(thread_args* args){
 int main(int argc, char **argv){
     printf("Server running...\n");
 
-
+    // Arguments parsing
     int thread_n = 0;
     int file_size = 0;
     int port = 0;
@@ -90,21 +83,21 @@ int main(int argc, char **argv){
             case 'j':
                 thread_n = strtol(argv[index++], &err, 10);
                 if(*err != '\0' || thread_n <= 0){
-                    printf("Argument Error: Thread_number (-j) should be a positive number.\n");
+                    printf("Argument Error: thread_number (-j) should be a positive number.\n");
                     return EXIT_FAILURE;
                 }
                 break;
             case 's':
                 file_size = strtol(argv[index++], &err, 10);
                 if(*err != '\0' || file_size <= 0){
-                    printf("Argument Error: File Size (-s) should be a positive number.\n");
+                    printf("Argument Error: file size (-s) should be a positive number.\n");
                     return EXIT_FAILURE;
                 }
                 break;
             case 'p':
                 port = strtol(argv[index++], &err, 10);
                 if(*err != '\0' || port <= 0){
-                    printf("Argument Error: Port (-p) should be a positive number.\n");
+                    printf("Argument Error: port (-p) should be a positive number.\n");
                     return EXIT_FAILURE;
                 }
                 break;
@@ -113,8 +106,7 @@ int main(int argc, char **argv){
                 return EXIT_FAILURE;
         }
     }
-    printf("Arguments:\n\tThread number: \t%i\n\tFile size: \t\t%i\n\tPort: \t\t\t%i\n",
-           thread_n, file_size, port);
+    // printf("Arguments:\n\tThread number: \t%i\n\tFile size: \t\t%i\n\tPort: \t\t\t%i\n",thread_n, file_size, port);
 
     // Generation of 1000 files
     char **files = (char**)malloc(sizeof(char*)*1000);
