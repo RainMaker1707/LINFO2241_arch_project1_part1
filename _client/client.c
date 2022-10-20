@@ -40,18 +40,10 @@ void join_and_free_threads_list(list *l){
 int thread_job(thread_args* args){
     struct sockaddr_in servaddr = args->servaddr;
     int key_size = args->key_size;
-    int sockfd;
-    int request_size = (key_size*key_size)+8;
+    int sockfd = args->sockfd;
 
-    // socket create and verification
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd == -1) {
-        printf("socket creation failed...\n");
-        exit(0);
-    }
-    else {
-        //printf("Socket successfully created..\n");
-    }
+    int request_size = (key_size*key_size)+8;
+    ssize_t read_in, written;
 
     // connect the client socket to server socket
     if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))
@@ -59,31 +51,44 @@ int thread_job(thread_args* args){
         printf("Connection with the server failed...\n");
         exit(0);
     }
-    else {
-        //printf("Connected to the server..\n");
-    }
 
-    int index = 90;
+    // Generation of index and key
+    srand((long)time(NULL));
+    int index = rand() % 1000;
     char *key = (char*)malloc(sizeof(char)*key_size*key_size);
     if(!key) return EXIT_FAILURE;
-    // Fill key with "a" to test
     for(int i=0 ; i<key_size*key_size ; i++){
-        key[i] = 'a';
+        key[i] = "0123456789abcdefghijklmnopkrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"[rand() % 62];
     }
 
-    char *buff = (char*)malloc(sizeof(char)*request_size);
-    if(!buff) return EXIT_FAILURE;
-    memcpy(buff, &index, sizeof(char)*4);
-    memcpy(buff+(sizeof(char)*4), &key_size, sizeof(char)*4);
-    memcpy(buff+(sizeof(char)*8), key, sizeof(char)*key_size*key_size);
+    // Preparing request buffer
+    char *buff_request = (char*)malloc(sizeof(char)*request_size);
+    if(!buff_request) return EXIT_FAILURE;
+    memcpy(buff_request, &index, sizeof(char)*4);
+    memcpy(buff_request+(sizeof(char)*4), &key_size, sizeof(char)*4);
+    memcpy(buff_request+(sizeof(char)*8), key, sizeof(char)*key_size*key_size);
 
-    write(sockfd, buff, sizeof(char)*request_size);
+    // Send request
+    written = write(sockfd, buff_request, sizeof(char)*request_size);
+    if (written != request_size){
+        printf("%d WRITTEN : %zd\nERROR : %d\n",sockfd,written,errno);
+        errno = 0;
+    }
+
+    // Timers
     struct timeval start, end;
     gettimeofday(&start, NULL);
 
+    // Get error field from response
     uint8_t *error = malloc(sizeof(char));
     if(!error) return EXIT_FAILURE;
-    read(sockfd, error, sizeof(char)*1);
+    read_in = read(sockfd, error, sizeof(char)*1);
+    if (read_in != 1){
+        printf("%d READ IN 1 : %zd\nERROR : %d\n",sockfd,read_in,errno);
+        errno = 0;
+    }
+    gettimeofday(&end, NULL);
+    printf("%d Elapsed time between send and receive: %ld µs\n",sockfd,(((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
     if(*error != 0){
         printf("Server send error code: %u\n", *error);
         return EXIT_FAILURE;
@@ -91,17 +96,28 @@ int thread_job(thread_args* args){
 
 
     int file_size;
-    read(sockfd, &file_size, sizeof(char)*4);
+    read_in = read(sockfd, &file_size, sizeof(char)*4);
+    if (read_in != 4){
+        printf("%d READ IN 2 : %zd\nERROR : %d\n",sockfd,read_in,errno);
+        errno = 0;
+    }
     if(file_size == 0){
         printf("No file received: file size = 0\n");
         return EXIT_FAILURE;
     }
-    // sleep(1);
-    char *ans = malloc(sizeof(char)*file_size);
-    if(!ans) return EXIT_FAILURE;
-    read(sockfd, ans, sizeof(char)*file_size);
-    gettimeofday(&end, NULL);
-    printf("Elapsed time between send and receive: %ld µs\n",((end.tv_sec - start.tv_sec)*1000000+( end.tv_usec - start.tv_usec)));
+
+    // Get encrypted file from response
+    char *encrypted_file = (char*)malloc(sizeof(char)*file_size);
+    if(!encrypted_file) return EXIT_FAILURE;
+    read_in = 0;
+    while ((unsigned long)read_in < sizeof(char)*file_size){
+        read_in += read(sockfd, encrypted_file+read_in, (sizeof(char)*file_size) - read_in);
+    }
+    if (read_in != file_size){
+        printf("%d READ IN 3 : %zd\nERROR : %d\n",sockfd,read_in,errno);
+        errno = 0;
+    }
+
 
 
     // close the socket
@@ -109,9 +125,9 @@ int thread_job(thread_args* args){
 
     //garbage
     free(key);
-    free(buff);
+    free(buff_request);
     free(error);
-    free(ans);
+    free(encrypted_file);
 
     return EXIT_SUCCESS;
 }
@@ -192,18 +208,26 @@ int main(int argc, char **argv){
     servaddr.sin_addr.s_addr = inet_addr(target_ip);
     servaddr.sin_port = htons(port);
 
-    // Launch threads
-    thread_args args;
-    args.key_size = key_size;
-    args.servaddr = servaddr;
 
-
-    struct timespec start, current, end_launch;
+    struct timespec start, current;
 
     int n = 0;
     list *thread_list = list_init();
     clock_gettime(CLOCK_REALTIME, &start);
     while(1) {
+        int sockfd;
+        // socket creation and verification
+        sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        if (sockfd == -1) {
+            printf("socket creation failed...\n");
+            exit(0);
+        }
+
+        thread_args args;
+        args.key_size = key_size;
+        args.servaddr = servaddr;
+        args.sockfd = sockfd;
+
         clock_gettime(CLOCK_REALTIME, &current);
         // printf("ELAPSED : %lu\n",current.tv_sec - start.tv_sec);
         if(current.tv_sec - start.tv_sec >= (long)request_time) {
@@ -217,9 +241,8 @@ int main(int argc, char **argv){
         // add threads to linked list
         list_push(thread_list, id);
         n++;
-        clock_gettime(CLOCK_REALTIME, &end_launch);
         // handle request rate by sleeping interval
-        usleep((((float)1/(float)request_rate)*1000000) - ((end_launch.tv_nsec - current.tv_nsec)/1000));
+        usleep((((float)1/(float)request_rate)*1000000));
     }
     return EXIT_SUCCESS;
 }

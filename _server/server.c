@@ -15,14 +15,21 @@ int thread_job(thread_args* args){
     socklen_t len = sizeof(client);
 
     char *buff_request = (char*)malloc(sizeof(char)*max_request_size);
+    if(!buff_request) return EXIT_FAILURE;
     char *buff_response = (char*)malloc(sizeof(char)*response_size);
+    if(!buff_response) return EXIT_FAILURE;
     char *encrypted_file = (char*)malloc(sizeof(char)*file_size*file_size);
+    if(!encrypted_file) return EXIT_FAILURE;
     char *key = (char*)malloc(sizeof(char)*file_size*file_size);
+    if(!key) return EXIT_FAILURE;
+
     char err_code;
     int file_index, key_size;
     int total_file_size = file_size*file_size;
+    ssize_t written, read_in;
 
     while(true){
+//        struct timeval t0, t1, t2, t3, t4, t5;
         // Handle client connexion
         client_sock_fd = accept(socket_fd, (struct sockaddr*)&client, &len);
         if (client_sock_fd < 0){
@@ -30,12 +37,20 @@ int thread_job(thread_args* args){
             return EXIT_FAILURE;
         }
         // printf("\nClient accepted\n");
+//        gettimeofday(&t0, NULL);
 
         // Get file index and key size from socket
-        read(client_sock_fd, buff_request, sizeof(char)*max_request_size);
-        memcpy(&file_index, buff_request, sizeof(char)*4);
-        memcpy(&key_size, buff_request+(sizeof(char)*4), sizeof(char)*4);
-        // printf("KEY SIZE : %d\n",key_size);
+        read_in = 0;
+        do {
+            read_in = read(client_sock_fd, &file_index+read_in, (sizeof(char)*4)-read_in);
+        } while(read_in != 4);
+
+        read_in = 0;
+        do {
+            read_in = read(client_sock_fd, &key_size+read_in, (sizeof(char)*4)-read_in);
+        } while(read_in != 4);
+
+//        gettimeofday(&t1, NULL);
 
 
         // Verification on key_size
@@ -44,11 +59,15 @@ int thread_job(thread_args* args){
             err_code = 1;
         } else {
             // Get key from socket
-            if(!key) return EXIT_FAILURE;
-            memcpy(key, buff_request+(sizeof(char)*8), sizeof(char)*key_size*key_size);
+            read_in = 0;
+            do {
+                read_in = read(client_sock_fd, key+read_in, (sizeof(char)*key_size*key_size)-read_in);
+            } while(read_in != key_size*key_size);
+//            gettimeofday(&t2, NULL);
             // Encrypt file
             encrypt_file(key_size, key, file_size, files[file_index], encrypted_file);
             err_code = 0;
+//            gettimeofday(&t3, NULL);
         }
 
         // Prepare response to client
@@ -57,9 +76,15 @@ int thread_job(thread_args* args){
         if (err_code == 0){
             memcpy(buff_response+(sizeof(char)*5), encrypted_file, sizeof(char)*total_file_size);
         }
-
+//        gettimeofday(&t4, NULL);
         // Send response
-        write(client_sock_fd, buff_response, sizeof(char)*response_size);
+        written = write(client_sock_fd, buff_response, sizeof(char)*response_size);
+//        write(client_sock_fd, buff_response, sizeof(char)*response_size);
+        if (written != response_size){
+            printf("%d WRITTEN : %zd\n",client_sock_fd,written);
+        }
+//        gettimeofday(&t5, NULL);
+//        printf("%2d | %6d | %6d | %6d | %6d | %6d | %6d\n",client_sock_fd,t1.tv_usec - t0.tv_usec, t2.tv_usec - t1.tv_usec, t3.tv_usec - t2.tv_usec, t4.tv_usec - t3.tv_usec, t5.tv_usec - t4.tv_usec, t5.tv_usec - t0.tv_usec);
         // printf("Answer sent\n");
 
         // Close connection
@@ -109,13 +134,13 @@ int main(int argc, char **argv){
     // printf("Arguments:\n\tThread number: \t%i\n\tFile size: \t\t%i\n\tPort: \t\t\t%i\n",thread_n, file_size, port);
 
     // Generation of 1000 files
+    srand((long)time(NULL));
     char **files = (char**)malloc(sizeof(char*)*1000);
     for(int i=0 ; i<1000 ; i++){
         files[i] = (char*)malloc(sizeof(char)*file_size*file_size);
-        // Fill files with letters A to test
-        for(int j=0; j<file_size*file_size; j++){
-            files[i][j] = 'a';
-        }
+         for(int j=0; j<file_size*file_size; j++){
+             files[i][j] = "0123456789abcdefghijklmnopkrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"[rand() % 62];
+         }
     }
 
     // Socket creation
@@ -176,5 +201,5 @@ int main(int argc, char **argv){
     // Close main socket
     close(socket_fd);
 
-    return EXIT_SUCCESS;
+    return EXIT_FAILURE;
 }

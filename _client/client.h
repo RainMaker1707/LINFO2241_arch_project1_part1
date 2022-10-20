@@ -15,9 +15,11 @@
 #include <unistd.h> // read(), write(), close()
 #include "../shared/crypt_tools.h"
 #include <pthread.h>
+#include <errno.h>
 
 typedef struct {
     int key_size;
+    int sockfd;
     struct sockaddr_in servaddr;
 } thread_args;
 

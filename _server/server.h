@@ -13,6 +13,8 @@
 #include <sys/types.h>
 #include "../shared/crypt_tools.h"
 #include <pthread.h>
+#include <sys/time.h>
+#include <errno.h>
 
 typedef struct {
     int socket_fd;
