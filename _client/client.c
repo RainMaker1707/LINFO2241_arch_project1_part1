@@ -94,7 +94,6 @@ int thread_job(thread_args* args){
         return EXIT_FAILURE;
     }
 
-
     int file_size;
     read_in = read(sockfd, &file_size, sizeof(char)*4);
     if (read_in != 4){
@@ -117,8 +116,6 @@ int thread_job(thread_args* args){
         printf("%d READ IN 3 : %zd\nERROR : %d\n",sockfd,read_in,errno);
         errno = 0;
     }
-
-
 
     // close the socket
     close(sockfd);
@@ -197,7 +194,8 @@ int main(int argc, char **argv){
         }
     }
 
-    // printf("Arguments:\n\tTarget IP: \t\t%s\n\tPort: \t\t\t%i\n\tKey size: \t\t%i\n\tRequest rate:   %i\n\tRequest time:   %i\n",target_ip, port, key_size, request_rate, request_time);
+    printf("Arguments:\n\tTarget IP: \t\t%s\n\tPort: \t\t\t%i\n\tKey size: \t\t%i\n\tRequest rate:   "
+           "%i\n\tRequest time:   %i\n",target_ip, port, key_size, request_rate, request_time);
 
     /// CODE the real client here
     struct sockaddr_in servaddr;
@@ -231,9 +229,9 @@ int main(int argc, char **argv){
         clock_gettime(CLOCK_REALTIME, &current);
         // printf("ELAPSED : %lu\n",current.tv_sec - start.tv_sec);
         if(current.tv_sec - start.tv_sec >= (long)request_time) {
+            join_and_free_threads_list(thread_list);
             printf("Run out of time: %d s\n", request_time);
             printf("Total threads number: %d\n", n);
-            join_and_free_threads_list(thread_list);
             break;
         }
         pthread_t *id = (pthread_t *) malloc(sizeof(pthread_t));
