@@ -44,13 +44,18 @@ int thread_job(thread_args* args){
         do {
             read_in += read(client_sock_fd, &file_index+read_in, (sizeof(char)*4)-read_in);
         } while(read_in != 4 && read_in !=-1);
-        if(read_in == -1) return EXIT_FAILURE;
-
+        if(read_in == -1) {
+	    printf("Error on file index extracting\n");
+	    return EXIT_FAILURE;
+	}
         read_in = 0;
         do {
             read_in += read(client_sock_fd, &key_size+read_in, (sizeof(char)*4)-read_in);
         } while(read_in != 4 && read_in !=-1);
-	if(read_in == -1) return EXIT_FAILURE; 
+	if(read_in == -1) {
+	    printf("Error on key size extracting\n");
+	    return EXIT_FAILURE;
+	}
 //        gettimeofday(&t1, NULL);
 
 
@@ -64,7 +69,10 @@ int thread_job(thread_args* args){
             do {
                 read_in += read(client_sock_fd, key+read_in, (sizeof(char)*key_size*key_size)-read_in);
             } while(read_in <= key_size*key_size && read_in != -1);
-		if(read_in == -1) return EXIT_FAILURE;
+	    if(read_in == -1) {
+		printf("Error on file extracting: %d\n", read_in);
+		return EXIT_FAILURE;
+	    }
 //            gettimeofday(&t2, NULL);
             // Encrypt file
             encrypt_file(key_size, key, file_size, files[file_index], encrypted_file);
