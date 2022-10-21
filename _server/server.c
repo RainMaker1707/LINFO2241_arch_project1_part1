@@ -42,7 +42,6 @@ int thread_job(thread_args* args){
         // Get file index and key size from socket
         read_in = 0;
         do {
-	    printf("read loop file index\n");
             read_in += read(client_sock_fd, &file_index+read_in, (sizeof(char)*4)-read_in);
         } while(read_in != 4 && read_in !=-1);
         if(read_in == -1) {
@@ -51,7 +50,6 @@ int thread_job(thread_args* args){
 	}
         read_in = 0;
         do {
-	    printf("read loop key size\n");
             read_in += read(client_sock_fd, &key_size+read_in, (sizeof(char)*4)-read_in);
         } while(read_in != 4 && read_in !=-1);
 	if(read_in == -1) {
@@ -69,7 +67,6 @@ int thread_job(thread_args* args){
             // Get key from socket
             read_in = 0;
             do {
-		printf("read loop\n");
                 read_in += read(client_sock_fd, key+read_in, (sizeof(char)*key_size*key_size)-read_in);
             } while(read_in != key_size*key_size && read_in != -1);
 	    if(read_in == -1) {
