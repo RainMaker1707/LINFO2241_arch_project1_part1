@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS += -c -std=gnu99 -Wall -Werror -W
+CFLAGS += -c -std=gnu99 -Wall -Werror -W -lpthread
 
 # library sources linked from client or server
 CLIENT_SOURCES = $(wildcard shared/crypt_tools.c _client/client.c)
