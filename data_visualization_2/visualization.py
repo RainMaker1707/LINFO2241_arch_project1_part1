@@ -12,11 +12,12 @@ def visualization(data:dict):
         for i in range(len(test["run_times"])):
             df = df.append({"run_times":test["run_times"][i],"request_rate":test["request_rate"],"key_size":test["key_size"],"file_size":2,"n_threads":1},ignore_index=True)
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(10,5))
     # sns.violinplot(data=df,y="run_times",x="request_rate")
-    fig = sns.catplot(data=df,y="run_times",x="request_rate",kind="box", height=5, aspect=2)
+    # ax.set(yscale="log")
+    sns.boxplot(data=df,y="run_times",x="request_rate", ax=ax)
     ax.set_axisbelow(True)
-    plt.xlabel("Requests per second [-]")
+    plt.xlabel("Request rate [-]")
     plt.ylabel("Request time [s]")
     plt.title("Request time depending on client request rate")
     plt.ylim(bottom=0)
@@ -26,8 +27,8 @@ def visualization(data:dict):
     # plt.show()
 
     image_format = "pdf"
-    image_name = "test.pdf"
-    fig.savefig(image_name, format=image_format, dpi=1200)
+    image_name = "weird_effect.pdf"
+    plt.savefig(image_name, format=image_format, dpi=1200)
     return
 
 
@@ -42,5 +43,6 @@ if __name__ == "__main__":
     #     duration = int(100/r)
     #     os.system("./../client -k 2 -r "+str(r)+" -t 1 127.0.0.1:2241 >> output.txt")
 
+    # data = parsing.parse("../output/1.txt")
     data = parsing.parse("output.txt")
     visualization(data)
