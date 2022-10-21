@@ -42,14 +42,15 @@ int thread_job(thread_args* args){
         // Get file index and key size from socket
         read_in = 0;
         do {
-            read_in = read(client_sock_fd, &file_index+read_in, (sizeof(char)*4)-read_in);
-        } while(read_in != 4);
+            read_in += read(client_sock_fd, &file_index+read_in, (sizeof(char)*4)-read_in);
+        } while(read_in != 4 && read_in !=-1);
+        if(read_in == -1) return EXIT_FAILURE;
 
         read_in = 0;
         do {
-            read_in = read(client_sock_fd, &key_size+read_in, (sizeof(char)*4)-read_in);
-        } while(read_in != 4);
-
+            read_in += read(client_sock_fd, &key_size+read_in, (sizeof(char)*4)-read_in);
+        } while(read_in != 4 && read_in !=-1);
+	if(read_in == -1) return EXIT_FAILURE; 
 //        gettimeofday(&t1, NULL);
 
 
@@ -61,8 +62,9 @@ int thread_job(thread_args* args){
             // Get key from socket
             read_in = 0;
             do {
-                read_in = read(client_sock_fd, key+read_in, (sizeof(char)*key_size*key_size)-read_in);
-            } while(read_in != key_size*key_size);
+                read_in += read(client_sock_fd, key+read_in, (sizeof(char)*key_size*key_size)-read_in);
+            } while(read_in <= key_size*key_size && read_in != -1);
+		if(read_in == -1) return EXIT_FAILURE;
 //            gettimeofday(&t2, NULL);
             // Encrypt file
             encrypt_file(key_size, key, file_size, files[file_index], encrypted_file);
@@ -171,7 +173,7 @@ int main(int argc, char **argv){
     printf("Socket binded\n");
 
     // FIFO listening queue starting
-    if (listen(socket_fd, SOMAXCONN) != 0) {
+    if (listen(socket_fd, 65535) != 0) {
         printf("Socket Error : unable to listen to socket.\n");
         return EXIT_FAILURE;
     }
