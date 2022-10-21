@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS += -c -std=gnu99 -Wall -Werror -W -lpthread
+CFLAGS += -c -std=gnu99 -Wall -Werror -W
 
 # library sources linked from client or server
 CLIENT_SOURCES = $(wildcard shared/crypt_tools.c _client/client.c)
@@ -29,10 +29,10 @@ CLIENT_ARGS = -k $(KEY_SIZE) -r $(REQUEST_RATE) -t $(TIME) $(IP):$(PORT)
 #################################
 
 $(SERVER): $(SERVER_OBJECTS)
-	$(CC) $(SERVER_OBJECTS) -o $(SERVER) $(LDFLAGS)
+	$(CC) $(SERVER_OBJECTS) -o $(SERVER) $(LDFLAGS) -lpthread
 
 $(CLIENT): $(CLIENT_OBJECTS)
-	$(CC) $(CLIENT_OBJECTS) -o $(CLIENT) $(LDFLAGS)
+	$(CC) $(CLIENT_OBJECTS) -o $(CLIENT) $(LDFLAGS) -lpthread
 
 $(SERVER)_run:
 	make $(SERVER)
