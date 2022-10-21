@@ -25,6 +25,13 @@ def parse(filename: str) -> dict:
                 all_data[nb_test]["errors"] += 1
             # New test result
             elif "Client running..." in line:
+                if "nb_threads" not in all_data[nb_test]:
+                    nb_test += 1
+                    all_data[nb_test] =  {"run_times": [], "errors": 0, "no_file": 0}
+            elif "SERVER" in line:
                 nb_test += 1
                 all_data[nb_test] =  {"run_times": [], "errors": 0, "no_file": 0}
+                splitted = line.split(" ")
+                all_data[nb_test]["nb_threads"] = int(splitted[1])
+                all_data[nb_test]["file_size"] = int(splitted[2][:-1])
     return all_data
