@@ -70,7 +70,7 @@ int thread_job(thread_args* args){
                 read_in += read(client_sock_fd, key+read_in, (sizeof(char)*key_size*key_size)-read_in);
             } while(read_in <= key_size*key_size && read_in != -1);
 	    if(read_in == -1) {
-		printf("Error on file extracting: %d\n", read_in);
+		printf("Error on file extracting: %ld\n", read_in);
 		return EXIT_FAILURE;
 	    }
 //            gettimeofday(&t2, NULL);
