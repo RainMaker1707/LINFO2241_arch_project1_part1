@@ -10,16 +10,16 @@ def visualization(data:dict):
     df = pd.DataFrame(columns=["run_times","request_rate","key_size","file_size","n_threads"])
     for test in data.values():
         for i in range(len(test["run_times"])):
-            df = df.append({"run_times":test["run_times"][i],"request_rate":test["request_rate"],"key_size":test["key_size"],"file_size":test["file_size"],"n_threads":test["nb_threads"]},ignore_index=True)
+            df = df.append({"run_times":test["run_times"][i],"request_rate":test["request_rate"],"key_size":test["key_size"],"file_size":test["file_size"],"n_threads":test["nb_threads"],"delay":test["delay"]},ignore_index=True)
 
     fig, ax = plt.subplots(figsize=(10,5))
     # sns.violinplot(data=df,y="run_times",x="request_rate")
-    ax.set(yscale="log")
-    sns.boxplot(data=df,y="run_times",x="file_size", ax=ax)
+    # ax.set(yscale="log")
+    sns.boxplot(data=df,y="run_times",x="delay", ax=ax)
     ax.set_axisbelow(True)
-    plt.xlabel("File size [-]")
+    plt.xlabel("Delay [ms]")
     plt.ylabel("Request time [s]")
-    plt.title("Request time depending on computation difficulty")
+    plt.title("Request time depending on network delay")
     plt.ylim(bottom=0)
     plt.grid(axis="y",alpha=0.2,zorder=-1)
     plt.tight_layout()
@@ -27,7 +27,7 @@ def visualization(data:dict):
     # plt.show()
 
     image_format = "pdf"
-    image_name = "computation.pdf"
+    image_name = "delay.pdf"
     plt.savefig(image_name, format=image_format, dpi=1200)
     return
 
@@ -43,6 +43,6 @@ if __name__ == "__main__":
     #     duration = int(100/r)
     #     os.system("./../client -k 2 -r "+str(r)+" -t 1 127.0.0.1:2241 >> output.txt")
 
-    data = parsing.parse("../output/4.txt")
+    data = parsing.parse("../output/5.txt")
     # data = parsing.parse("output.txt")
     visualization(data)

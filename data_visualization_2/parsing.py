@@ -33,5 +33,7 @@ def parse(filename: str) -> dict:
                 all_data[nb_test] =  {"run_times": [], "errors": 0, "no_file": 0}
                 splitted = line.split(" ")
                 all_data[nb_test]["nb_threads"] = int(splitted[1])
-                all_data[nb_test]["file_size"] = int(splitted[2][:-1])
+                all_data[nb_test]["file_size"] = int(splitted[2])
+                all_data[nb_test]["delay"] = int(splitted[3])
+                all_data[nb_test]["loss"] = int(splitted[4][:-1])
     return all_data
