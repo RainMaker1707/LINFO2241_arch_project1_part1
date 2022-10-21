@@ -15,7 +15,8 @@ def parse(filename: str) -> dict:
                 all_data[nb_test]["request_time"] = int(line[14:-1])
             # All ok run time store and convert in seconds
             elif "Elapsed time" in line:
-                all_data[nb_test]["run_times"].append(int(line[41:-4])/1000000)
+                last_stuck = line.split(":")
+                all_data[nb_test]["run_times"].append(int(last_stuck[-1][1:-4])/1000000)
             # file size was equal to 0
             elif "No file received" in line:
                 all_data[nb_test]["no_file"] += 1
