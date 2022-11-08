@@ -29,10 +29,10 @@ CLIENT_ARGS = -k $(KEY_SIZE) -r $(REQUEST_RATE) -t $(TIME) $(IP):$(PORT)
 #################################
 
 $(SERVER): $(SERVER_OBJECTS)
-	$(CC) $(SERVER_OBJECTS) -o $(SERVER) $(LDFLAGS) -lpthread
+	(CC) $(SERVER_OBJECTS) -o $(SERVER) $(LDFLAGS) -lpthread
 
 $(CLIENT): $(CLIENT_OBJECTS)
-	$(CC) $(CLIENT_OBJECTS) -o $(CLIENT) $(LDFLAGS) -lpthread
+	(CC) $(CLIENT_OBJECTS) -o $(CLIENT) $(LDFLAGS) -lpthread
 
 $(SERVER)_run:
 	make $(SERVER)

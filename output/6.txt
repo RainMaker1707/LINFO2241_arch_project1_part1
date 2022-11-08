@@ -956,6 +956,7 @@ Arguments:
 4 Elapsed time between send and receive: 27944 µs
 Run out of time: 10 s
 Total threads number: 492
+SERVER 1 128 0 4
 Client running...
 Arguments:
 	Target IP: 		10.0.0.3
