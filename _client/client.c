@@ -41,37 +41,35 @@ int thread_job(thread_args* args){
     struct sockaddr_in servaddr = args->servaddr;
     int key_size = args->key_size;
     int sockfd = args->sockfd;
+    int key_size_network = htonl(key_size);
 
-    int request_size = (key_size*key_size)+8;
+    int request_size = (key_size*key_size*sizeof(ARRAY_TYPE))+8;
     ssize_t read_in, written;
 
     // connect the client socket to server socket
     if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))
         != 0) {
-        printf("Connection with the server failed...\n");
-        exit(0);
+        fprintf(stderr,"Connection with the server failed...\n");
+        return EXIT_FAILURE;
     }
 
     // Generation of index and key
-    srand((long)time(NULL));
     int index = rand() % 1000;
-    char *key = (char*)malloc(sizeof(char)*key_size*key_size);
+    ARRAY_TYPE *key = (ARRAY_TYPE*)malloc(sizeof(ARRAY_TYPE)*key_size*key_size*sizeof(char));
     if(!key) return EXIT_FAILURE;
-    for(int i=0 ; i<key_size*key_size ; i++){
-        key[i] = "0123456789abcdefghijklmnopkrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"[rand() % 62];
-    }
 
     // Preparing request buffer
     char *buff_request = (char*)malloc(sizeof(char)*request_size);
     if(!buff_request) return EXIT_FAILURE;
+    index = htonl(index);
     memcpy(buff_request, &index, sizeof(char)*4);
-    memcpy(buff_request+(sizeof(char)*4), &key_size, sizeof(char)*4);
-    memcpy(buff_request+(sizeof(char)*8), key, sizeof(char)*key_size*key_size);
+    memcpy(buff_request+(sizeof(char)*4), &key_size_network, sizeof(char)*4);
+    memcpy(buff_request+(sizeof(char)*8), key, sizeof(ARRAY_TYPE)*key_size*key_size*sizeof(char));
 
     // Send request
     written = write(sockfd, buff_request, sizeof(char)*request_size);
     if (written != request_size){
-        printf("%d WRITTEN : %zd\nERROR : %d\n",sockfd,written,errno);
+        verbose("%d WRITTEN : %zd\nERROR : %s\n",sockfd,written, strerror(errno));
         errno = 0;
     }
 
@@ -84,28 +82,29 @@ int thread_job(thread_args* args){
     if(!error) return EXIT_FAILURE;
     read_in = read(sockfd, error, sizeof(char)*1);
     if (read_in != 1){
-        printf("%d READ IN 1 : %zd\nERROR : %d\n",sockfd,read_in,errno);
+        verbose("%d READ IN 1 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
         errno = 0;
     }
     gettimeofday(&end, NULL);
-    printf("%d Elapsed time between send and receive: %ld µs\n",sockfd,(((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
+//    verbose("%d Elapsed time between send and receive: %ld µs\n",sockfd,(((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
     if(*error != 0){
-        printf("Server send error code: %u\n", *error);
+        fprintf(stderr, "Server send error code: %u\n", *error);
         return EXIT_FAILURE;
     }
 
     int file_size;
     read_in = read(sockfd, &file_size, sizeof(char)*4);
+    file_size = ntohl(file_size);
     if (read_in != 4){
-        printf("%d READ IN 2 : %zd\nERROR : %d\n",sockfd,read_in,errno);
+        verbose("%d READ IN 2 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
         errno = 0;
     }
     if(file_size == 0){
-        printf("No file received: file size = 0\n");
+        fprintf(stderr,"No file received: file size = 0\n");
         return EXIT_FAILURE;
     }
 
-    // Get encrypted file from response
+    // Get encrypted file from response (size sent by server is already multiplied by sizeof(ARRAY_TYPE)
     char *encrypted_file = (char*)malloc(sizeof(char)*file_size);
     if(!encrypted_file) return EXIT_FAILURE;
     read_in = 0;
@@ -113,7 +112,7 @@ int thread_job(thread_args* args){
         read_in += read(sockfd, encrypted_file+read_in, (sizeof(char)*file_size) - read_in);
     }
     if (read_in != file_size){
-        printf("%d READ IN 3 : %zd\nERROR : %d\n",sockfd,read_in,errno);
+        verbose("%d READ IN 3 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
         errno = 0;
     }
 
@@ -131,7 +130,7 @@ int thread_job(thread_args* args){
 
 
 int main(int argc, char **argv){
-    printf("Client running...\n");
+    verbose("Client running...\n");
 
     // Arguments parsing
     int key_size;
@@ -167,6 +166,8 @@ int main(int argc, char **argv){
                     return EXIT_FAILURE;
                 }
                 break;
+            case 'v':
+                setVerbose(true);
             default:
                 ip_and_port = argv[index-1];
                 char delim = ':';
@@ -194,10 +195,9 @@ int main(int argc, char **argv){
         }
     }
 
-    printf("Arguments:\n\tTarget IP: \t\t%s\n\tPort: \t\t\t%i\n\tKey size: \t\t%i\n\tRequest rate:   "
-           "%i\n\tRequest time:   %i\n",target_ip, port, key_size, request_rate, request_time);
+    verbose("Arguments:\n\tTarget IP: \t\t%s\n\tPort: \t\t\t%i\n\tKey size: \t\t%i\n\tRequest rate:"
+           "\t\t%i\n\tRequest time:\t\t%i\n",target_ip, port, key_size, request_rate, request_time);
 
-    /// CODE the real client here
     struct sockaddr_in servaddr;
 
     // assign IP, PORT
@@ -217,8 +217,8 @@ int main(int argc, char **argv){
         // socket creation and verification
         sockfd = socket(AF_INET, SOCK_STREAM, 0);
         if (sockfd == -1) {
-            printf("socket creation failed...\n");
-            exit(0);
+            fprintf(stderr, "Socket creation failed...\n");
+            return EXIT_FAILURE;
         }
 
         thread_args args;
@@ -226,12 +226,13 @@ int main(int argc, char **argv){
         args.servaddr = servaddr;
         args.sockfd = sockfd;
 
+
         clock_gettime(CLOCK_REALTIME, &current);
         // printf("ELAPSED : %lu\n",current.tv_sec - start.tv_sec);
         if(current.tv_sec - start.tv_sec >= (long)request_time) {
             join_and_free_threads_list(thread_list);
-            printf("Run out of time: %d s\n", request_time);
-            printf("Total threads number: %d\n", n);
+            verbose("Run out of time: %d s\n", request_time);
+            verbose("Total threads number: %d\n", n);
             break;
         }
         pthread_t *id = (pthread_t *) malloc(sizeof(pthread_t));

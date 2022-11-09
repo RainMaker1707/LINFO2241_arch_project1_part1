@@ -12,14 +12,16 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include "../shared/crypt_tools.h"
+#include "../shared/verbose.h"
 #include <pthread.h>
 #include <sys/time.h>
 #include <errno.h>
+#define ARRAY_TYPE uint32_t
 
 typedef struct {
     int socket_fd;
     int file_size;
-    char** files;
+    ARRAY_TYPE** files;
 } thread_args;
 
 int thread_job(thread_args* args);

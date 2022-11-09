@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS += -c -std=gnu99 -Wall -Werror -W
+CFLAGS += -c -std=gnu99 -Wall -W
 
 # library sources linked from client or server
-CLIENT_SOURCES = $(wildcard shared/crypt_tools.c _client/client.c)
-SERVER_SOURCES = $(wildcard shared/crypt_tools.c _server/server.c)
+CLIENT_SOURCES = $(wildcard shared/crypt_tools.c shared/verbose.c _client/client.c)
+SERVER_SOURCES = $(wildcard shared/crypt_tools.c shared/verbose.c _server/server.c)
 # compile libraries to objects
 SERVER_OBJECTS = $(SERVER_SOURCES:.c=.o)
 CLIENT_OBJECTS = $(CLIENT_SOURCES:.c=.o)
@@ -29,10 +29,10 @@ CLIENT_ARGS = -k $(KEY_SIZE) -r $(REQUEST_RATE) -t $(TIME) $(IP):$(PORT)
 #################################
 
 $(SERVER): $(SERVER_OBJECTS)
-	(CC) $(SERVER_OBJECTS) -o $(SERVER) $(LDFLAGS) -lpthread
+	@$(CC) $(SERVER_OBJECTS) -o $(SERVER) $(LDFLAGS)
 
 $(CLIENT): $(CLIENT_OBJECTS)
-	(CC) $(CLIENT_OBJECTS) -o $(CLIENT) $(LDFLAGS) -lpthread
+	@$(CC) $(CLIENT_OBJECTS) -o $(CLIENT) $(LDFLAGS)
 
 $(SERVER)_run:
 	make $(SERVER)
