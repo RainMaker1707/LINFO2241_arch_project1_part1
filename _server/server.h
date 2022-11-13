@@ -11,11 +11,11 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include "../shared/crypt_tools.h"
-#include "../shared/verbose.h"
 #include <pthread.h>
 #include <sys/time.h>
 #include <errno.h>
+#include "../shared/crypt_tools.h"
+#include "../shared/verbose.h"
 #define ARRAY_TYPE uint32_t
 
 typedef struct {

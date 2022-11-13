@@ -13,10 +13,10 @@
 #include <strings.h> // bzero()
 #include <sys/socket.h>
 #include <unistd.h> // read(), write(), close()
-#include "../shared/crypt_tools.h"
-#include "../shared/verbose.h"
 #include <pthread.h>
 #include <errno.h>
+#include "../shared/crypt_tools.h"
+#include "../shared/verbose.h"
 #define ARRAY_TYPE uint32_t
 
 typedef struct {

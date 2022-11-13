@@ -1,48 +1,34 @@
-CC = gcc
-CFLAGS += -c -std=gnu99 -Wall -W
+CFLAGS += -std=gnu99 -Wall -W -mno-sse2 -mno-avx -mno-avx2 -mno-avx512f -fno-unroll-loops -fno-tree-vectorize -O2 -lpthread
 
-# library sources linked from client or server
-CLIENT_SOURCES = $(wildcard shared/crypt_tools.c shared/verbose.c _client/client.c)
-SERVER_SOURCES = $(wildcard shared/crypt_tools.c shared/verbose.c _server/server.c)
-# compile libraries to objects
-SERVER_OBJECTS = $(SERVER_SOURCES:.c=.o)
-CLIENT_OBJECTS = $(CLIENT_SOURCES:.c=.o)
-# commands default name and default output
-SERVER = server
-CLIENT = client
-# add args here
+server: _server/server.o shared/crypt_tools.o shared/verbose.o
+	@gcc -DOPTIM=0 shared/crypt_tools.o shared/verbose.o _server/server.o -o server $(CFLAGS)
 
-THREAD_N = 101
-SIZE = 1024
-PORT = 2241
-SERVER_ARGS = -j $(THREAD_N) -s $(SIZE) -p $(PORT)
+server-optim: _server/server-optim.o shared/crypt_tools-optim.o shared/verbose.o
+	@gcc -DOPTIM=1 shared/crypt_tools-optim.o shared/verbose.o _server/server-optim.o -o server-optim $(CFLAGS)
 
-KEY_SIZE = 128
-REQUEST_RATE = 9
-TIME = 10
-IP = 127.0.0.1
-PORT = 2241
-CLIENT_ARGS = -k $(KEY_SIZE) -r $(REQUEST_RATE) -t $(TIME) $(IP):$(PORT)
+client: _client/client.o shared/crypt_tools.o shared/verbose.o
+	@gcc -DOPTIM=0 shared/crypt_tools.o shared/verbose.o _client/client.o -o client $(CFLAGS)
 
-#################################
-##  Here starts make commands  ##
-#################################
+_client/client.o: _client/client.c
+	@gcc -DOPTIM=0 -c -o _client/client.o _client/client.c $(CFLAGS)
 
-$(SERVER): $(SERVER_OBJECTS)
-	@$(CC) $(SERVER_OBJECTS) -o $(SERVER) $(LDFLAGS)
+_server/server.o: _server/server.c
+	@gcc -DOPTIM=0 -c -o _server/server.o _server/server.c $(CFLAGS)
 
-$(CLIENT): $(CLIENT_OBJECTS)
-	@$(CC) $(CLIENT_OBJECTS) -o $(CLIENT) $(LDFLAGS)
+_server/server-optim.o: _server/server.c
+	@gcc -DOPTIM=1 -c -o _server/server-optim.o _server/server.c $(CFLAGS)
 
-$(SERVER)_run:
-	make $(SERVER)
-	./$(SERVER) $(SERVER_ARGS)
+shared/crypt_tools.o: shared/crypt_tools.c
+	@gcc -DOPTIM=0 -c -o shared/crypt_tools.o shared/crypt_tools.c $(CFLAGS)
 
-$(CLIENT)_run:
-	make $(CLIENT)
-	./$(CLIENT) $(CLIENT_ARGS)
+shared/crypt_tools-optim.o: shared/crypt_tools.c
+	@gcc -DOPTIM=1 -c -o shared/crypt_tools-optim.o shared/crypt_tools.c $(CFLAGS)
+
+shared/verbose.o: shared/verbose.c
+	@gcc -DOPTIM=0 -c -o shared/verbose.o shared/verbose.c $(CFLAGS)
 
 clean:
-	rm $(CLIENT_OBJECTS) $(SERVER_OBJECTS) $(SERVER) $(CLIENT)
+	@rm _server/server.o _server/server-optim.o _client/client.o shared/crypt_tools.o shared/crypt_tools-optim.o shared/verbose.o
+
 
 

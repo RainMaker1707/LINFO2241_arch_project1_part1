@@ -54,8 +54,17 @@ int thread_job(thread_args* args){
     }
 
     // Generation of index and key
-    int index = rand() % 1000;
+//    int index = rand() % 1000;
+    int index = 0;
     ARRAY_TYPE *key = (ARRAY_TYPE*)malloc(sizeof(ARRAY_TYPE)*key_size*key_size*sizeof(char));
+
+
+    // To delete
+    for(int i=0 ; i<key_size*key_size ; i++){
+        key[i] = i;
+    }
+
+
     if(!key) return EXIT_FAILURE;
 
     // Preparing request buffer
@@ -86,7 +95,7 @@ int thread_job(thread_args* args){
         errno = 0;
     }
     gettimeofday(&end, NULL);
-//    verbose("%d Elapsed time between send and receive: %ld µs\n",sockfd,(((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
+    verbose("%d Elapsed time between send and receive: %ld µs\n",sockfd,(((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
     if(*error != 0){
         fprintf(stderr, "Server send error code: %u\n", *error);
         return EXIT_FAILURE;
@@ -133,10 +142,10 @@ int main(int argc, char **argv){
     verbose("Client running...\n");
 
     // Arguments parsing
-    int key_size;
-    int request_rate;
-    int request_time;
-    int port;
+    int key_size = 8;
+    int request_rate = 1;
+    int request_time = 1;
+    int port = 0;
     char target_ip[15];
     char *ip_and_port = NULL;
 
@@ -168,6 +177,7 @@ int main(int argc, char **argv){
                 break;
             case 'v':
                 setVerbose(true);
+                break;
             default:
                 ip_and_port = argv[index-1];
                 char delim = ':';
