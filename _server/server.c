@@ -1,4 +1,6 @@
 #include "server.h"
+#define TOTAL_FILE_SIZE 4194304
+//#define TOTAL_FILE_SIZE 256
 
 int main(int argc, char **argv){
 //    verbose("Server starting...\n");
@@ -19,7 +21,6 @@ int main(int argc, char **argv){
     while((opt = getopt(argc, argv, "j:s:p:v")) != -1) {
         switch (opt) {
             case 'j':
-                thread_n = atoi(optarg);
                 break;
             case 's':
                 file_size = atoi(optarg);
@@ -81,10 +82,6 @@ int main(int argc, char **argv){
     }
 //    verbose("Server listening\n");
 
-    // Utils variables
-    int max_request_size = 8+(file_size*file_size*sizeof(ARRAY_TYPE));
-    int response_size = 5+(file_size*file_size*sizeof(ARRAY_TYPE));
-
     // Client structure and socket
     int client_sock_fd;
     struct sockaddr_in client;
@@ -99,7 +96,8 @@ int main(int argc, char **argv){
     int file_index, key_size;
     int total_file_size = file_size*file_size*sizeof(ARRAY_TYPE);
     int total_file_size_network = htonl(total_file_size);
-    ssize_t written, read_in;
+    int total_key_size;
+    ssize_t read_in;
 
     while((client_sock_fd = accept(socket_fd, (struct sockaddr*)&client, &len))) {
         // Handle client connexion
@@ -124,41 +122,34 @@ int main(int argc, char **argv){
         }
         // Network byte order
         key_size = ntohl(key_size);
-
-
-//        // Verification on key_size
-//        if (file_size % key_size != 0 || key_size > file_size) {
-//            fprintf(stderr, "Key Error : the key size must divide the file size and can not exceed it.");
-//            err_code = 1;
-//        } else {
+        total_key_size = key_size * key_size * sizeof(ARRAY_TYPE);
         // Get key from socket
         read_in = 0;
         do {
-            read_in += read(client_sock_fd, key + read_in, (sizeof(ARRAY_TYPE) * key_size * key_size) - read_in);
-        } while (read_in != key_size * key_size * sizeof(ARRAY_TYPE) && read_in != -1);
+            read_in += read(client_sock_fd, key + read_in, total_key_size - read_in);
+        } while (read_in != total_key_size && read_in != -1);
         if (read_in == -1) {
             fprintf(stderr, "Error on file extracting: %ld\n", read_in);
             return EXIT_FAILURE;
         }
         // Encrypt file
         // print_array(files[file_index],file_size);
-        encrypt_file(key_size, key, file_size, files[file_index], encrypted_file);
-        // print_array(encrypted_file, file_size);
+        encrypt_file(key_size, key, files[file_index], encrypted_file);
+//        print_array(encrypted_file, file_size);
         // print_array(key, key_size);
         err_code = 0;
-//        }
 
         // Send response to client
         write(client_sock_fd, &err_code, sizeof(char));
         write(client_sock_fd, &total_file_size_network, sizeof(char)*4);
         if (err_code == 0) {
-            write(client_sock_fd, encrypted_file, sizeof(char) * total_file_size);
+            write(client_sock_fd, encrypted_file, sizeof(char) * TOTAL_FILE_SIZE);
         }
 
         // Close connection
         close(client_sock_fd);
         // Re-initialize memory of encrypted file
-        memset(encrypted_file,0,total_file_size);
+        memset(encrypted_file,0,TOTAL_FILE_SIZE);
     }
 
     // Free files
