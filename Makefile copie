@@ -3,8 +3,8 @@ CFLAGS += -std=gnu99 -Wall -W -mno-sse2 -mno-avx -mno-avx2 -mno-avx512f -fno-unr
 server: _server/server.o shared/crypt_tools.o shared/verbose.o
 	@gcc -DOPTIM=0 shared/crypt_tools.o shared/verbose.o _server/server.o -o server $(CFLAGS)
 
-server-optim: _server/server-optim.o shared/verbose.o
-	@gcc -DOPTIM=1 shared/verbose.o _server/server-optim.o -o server-optim $(CFLAGS)
+server-optim: _server/server-optim.o shared/crypt_tools-optim.o shared/verbose.o
+	@gcc -DOPTIM=1 shared/crypt_tools-optim.o shared/verbose.o _server/server-optim.o -o server-optim $(CFLAGS)
 
 client: _client/client.o shared/crypt_tools.o shared/verbose.o
 	@gcc -DOPTIM=0 shared/crypt_tools.o shared/verbose.o _client/client.o -o client $(CFLAGS)

@@ -1,0 +1,1163 @@
+1 8
+# started on Tue Nov 15 16:52:47 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       640,200,831      L1-dcache-load-misses     #    6.90% of all L1-dcache accesses  (31.20%)
+     9,284,938,282      L1-dcache-loads                                               (31.42%)
+        37,686,102      L1-icache-load-misses                                         (31.26%)
+   <not supported>      L1-icache-loads                                             
+       368,697,659      cache-references                                              (25.15%)
+        66,660,895      cache-misses              #   18.080 % of all cache refs      (25.06%)
+           988,887      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.95%)
+     9,228,794,845      dTLB-loads                                                    (25.09%)
+           246,454      iTLB-load-misses          # 1815.37% of all iTLB cache accesses  (25.05%)
+            13,576      iTLB-loads                                                    (24.95%)
+     1,091,103,346      cycle_activity.stalls_total                                     (25.04%)
+       810,522,146      cycle_activity.stalls_mem_any                                     (25.05%)
+         1,179,132      mem_load_retired.l3_miss                                      (24.95%)
+    10,020,876,805      cycles                                                        (24.88%)
+     5,173,654,902      branches                                                      (24.88%)
+    37,803,476,413      instructions              #    3.77  insn per cycle           (31.12%)
+        14,625,850      mem_load_retired.l2_miss                                      (31.07%)
+
+       8.393399841 seconds time elapsed
+
+       1.998725000 seconds user
+       0.291752000 seconds sys
+
+
+# started on Tue Nov 15 16:52:56 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       680,190,039      L1-dcache-load-misses     #    7.02% of all L1-dcache accesses  (31.02%)
+     9,685,931,859      L1-dcache-loads                                               (31.13%)
+        42,306,438      L1-icache-load-misses                                         (31.01%)
+   <not supported>      L1-icache-loads                                             
+       384,855,618      cache-references                                              (24.99%)
+        67,852,100      cache-misses              #   17.631 % of all cache refs      (25.00%)
+         1,026,261      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.25%)
+     9,794,205,754      dTLB-loads                                                    (25.54%)
+           242,130      iTLB-load-misses          # 1615.49% of all iTLB cache accesses  (25.58%)
+            14,988      iTLB-loads                                                    (25.44%)
+     1,147,988,132      cycle_activity.stalls_total                                     (25.11%)
+       841,097,651      cycle_activity.stalls_mem_any                                     (24.87%)
+         1,508,210      mem_load_retired.l3_miss                                      (24.78%)
+    10,623,294,669      cycles                                                        (24.64%)
+     5,468,851,310      branches                                                      (24.87%)
+    39,564,372,419      instructions              #    3.72  insn per cycle           (30.89%)
+        15,838,514      mem_load_retired.l2_miss                                      (30.79%)
+
+       4.967771311 seconds time elapsed
+
+       2.060778000 seconds user
+       0.300754000 seconds sys
+
+
+# started on Tue Nov 15 16:53:02 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       579,405,300      L1-dcache-load-misses     #    6.98% of all L1-dcache accesses  (31.09%)
+     8,296,377,873      L1-dcache-loads                                               (31.11%)
+        31,892,991      L1-icache-load-misses                                         (31.19%)
+   <not supported>      L1-icache-loads                                             
+       319,203,002      cache-references                                              (25.04%)
+        42,330,779      cache-misses              #   13.261 % of all cache refs      (25.38%)
+           892,347      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.47%)
+     8,295,501,005      dTLB-loads                                                    (25.37%)
+           215,584      iTLB-load-misses          # 1456.35% of all iTLB cache accesses  (25.22%)
+            14,803      iTLB-loads                                                    (24.91%)
+       896,856,924      cycle_activity.stalls_total                                     (24.76%)
+       670,652,029      cycle_activity.stalls_mem_any                                     (24.74%)
+         1,172,157      mem_load_retired.l3_miss                                      (24.84%)
+     8,916,774,572      cycles                                                        (24.85%)
+     4,612,080,947      branches                                                      (24.89%)
+    33,540,619,062      instructions              #    3.76  insn per cycle           (31.10%)
+        13,853,362      mem_load_retired.l2_miss                                      (31.15%)
+
+       4.612259656 seconds time elapsed
+
+       1.869535000 seconds user
+       0.247778000 seconds sys
+
+
+# started on Tue Nov 15 16:53:07 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       593,989,625      L1-dcache-load-misses     #    6.92% of all L1-dcache accesses  (31.27%)
+     8,577,937,527      L1-dcache-loads                                               (31.24%)
+        35,052,715      L1-icache-load-misses                                         (31.23%)
+   <not supported>      L1-icache-loads                                             
+       339,055,081      cache-references                                              (24.89%)
+        50,053,853      cache-misses              #   14.763 % of all cache refs      (24.88%)
+           927,601      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.02%)
+     8,659,901,956      dTLB-loads                                                    (24.97%)
+           221,144      iTLB-load-misses          # 1569.84% of all iTLB cache accesses  (25.23%)
+            14,087      iTLB-loads                                                    (25.17%)
+       953,133,538      cycle_activity.stalls_total                                     (25.08%)
+       716,179,639      cycle_activity.stalls_mem_any                                     (25.07%)
+         1,193,235      mem_load_retired.l3_miss                                      (24.86%)
+     9,360,277,156      cycles                                                        (24.90%)
+     4,821,838,101      branches                                                      (24.98%)
+    34,980,603,121      instructions              #    3.74  insn per cycle           (31.16%)
+        14,841,934      mem_load_retired.l2_miss                                      (31.20%)
+
+       4.397462123 seconds time elapsed
+
+       1.864755000 seconds user
+       0.257594000 seconds sys
+
+
+# started on Tue Nov 15 16:53:12 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       572,727,223      L1-dcache-load-misses     #    6.88% of all L1-dcache accesses  (30.66%)
+     8,325,295,154      L1-dcache-loads                                               (30.76%)
+        40,294,576      L1-icache-load-misses                                         (30.77%)
+   <not supported>      L1-icache-loads                                             
+       332,239,361      cache-references                                              (24.67%)
+        60,771,295      cache-misses              #   18.291 % of all cache refs      (25.57%)
+           850,062      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.58%)
+     8,172,340,720      dTLB-loads                                                    (26.00%)
+           202,730      iTLB-load-misses          # 1610.50% of all iTLB cache accesses  (25.91%)
+            12,588      iTLB-loads                                                    (25.32%)
+       941,957,219      cycle_activity.stalls_total                                     (25.32%)
+       683,818,629      cycle_activity.stalls_mem_any                                     (24.86%)
+         1,143,121      mem_load_retired.l3_miss                                      (24.72%)
+     8,894,956,071      cycles                                                        (24.49%)
+     4,610,286,209      branches                                                      (24.53%)
+    33,396,430,588      instructions              #    3.75  insn per cycle           (30.73%)
+        15,922,704      mem_load_retired.l2_miss                                      (30.85%)
+
+       6.305178603 seconds time elapsed
+
+       1.612977000 seconds user
+       0.275069000 seconds sys
+
+
+# started on Tue Nov 15 16:53:19 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       614,271,265      L1-dcache-load-misses     #    7.04% of all L1-dcache accesses  (31.15%)
+     8,722,919,045      L1-dcache-loads                                               (31.33%)
+        38,519,157      L1-icache-load-misses                                         (31.40%)
+   <not supported>      L1-icache-loads                                             
+       344,782,330      cache-references                                              (25.25%)
+        62,737,725      cache-misses              #   18.196 % of all cache refs      (25.21%)
+           926,965      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.03%)
+     8,627,848,720      dTLB-loads                                                    (25.14%)
+           231,903      iTLB-load-misses          # 1301.80% of all iTLB cache accesses  (25.03%)
+            17,814      iTLB-loads                                                    (25.05%)
+       966,653,939      cycle_activity.stalls_total                                     (25.17%)
+       716,443,891      cycle_activity.stalls_mem_any                                     (25.03%)
+         1,220,306      mem_load_retired.l3_miss                                      (24.94%)
+     9,379,293,199      cycles                                                        (24.76%)
+     4,841,930,900      branches                                                      (24.63%)
+    35,344,414,121      instructions              #    3.77  insn per cycle           (30.82%)
+        12,947,814      mem_load_retired.l2_miss                                      (30.89%)
+
+       4.809929058 seconds time elapsed
+
+       1.700410000 seconds user
+       0.311652000 seconds sys
+
+
+# started on Tue Nov 15 16:53:25 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       620,572,598      L1-dcache-load-misses     #    6.92% of all L1-dcache accesses  (31.17%)
+     8,964,920,519      L1-dcache-loads                                               (30.98%)
+        35,785,740      L1-icache-load-misses                                         (31.10%)
+   <not supported>      L1-icache-loads                                             
+       346,929,389      cache-references                                              (25.04%)
+        49,484,597      cache-misses              #   14.264 % of all cache refs      (25.24%)
+           941,681      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.20%)
+     8,920,390,289      dTLB-loads                                                    (25.14%)
+           245,441      iTLB-load-misses          # 1799.03% of all iTLB cache accesses  (25.12%)
+            13,643      iTLB-loads                                                    (25.02%)
+       968,510,809      cycle_activity.stalls_total                                     (25.02%)
+       720,217,606      cycle_activity.stalls_mem_any                                     (25.00%)
+         1,200,488      mem_load_retired.l3_miss                                      (24.93%)
+     9,696,569,235      cycles                                                        (25.02%)
+     5,029,673,849      branches                                                      (24.96%)
+    36,692,562,204      instructions              #    3.78  insn per cycle           (31.10%)
+        16,268,474      mem_load_retired.l2_miss                                      (31.06%)
+
+       4.695710819 seconds time elapsed
+
+       1.908086000 seconds user
+       0.288169000 seconds sys
+
+
+# started on Tue Nov 15 16:53:31 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       577,011,592      L1-dcache-load-misses     #    7.07% of all L1-dcache accesses  (31.30%)
+     8,158,179,367      L1-dcache-loads                                               (31.19%)
+        31,017,468      L1-icache-load-misses                                         (31.33%)
+   <not supported>      L1-icache-loads                                             
+       321,918,737      cache-references                                              (25.14%)
+        48,957,611      cache-misses              #   15.208 % of all cache refs      (25.14%)
+           869,733      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.17%)
+     8,027,198,938      dTLB-loads                                                    (25.01%)
+           202,383      iTLB-load-misses          # 1189.72% of all iTLB cache accesses  (24.88%)
+            17,011      iTLB-loads                                                    (24.85%)
+       863,994,198      cycle_activity.stalls_total                                     (24.89%)
+       631,409,673      cycle_activity.stalls_mem_any                                     (24.88%)
+         1,006,632      mem_load_retired.l3_miss                                      (24.89%)
+     8,660,787,078      cycles                                                        (25.03%)
+     4,483,639,538      branches                                                      (24.98%)
+    32,632,363,159      instructions              #    3.77  insn per cycle           (31.21%)
+         9,322,425      mem_load_retired.l2_miss                                      (31.31%)
+
+       4.597816703 seconds time elapsed
+
+       1.880895000 seconds user
+       0.226249000 seconds sys
+
+
+# started on Tue Nov 15 16:53:36 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       494,742,810      L1-dcache-load-misses     #    7.06% of all L1-dcache accesses  (31.15%)
+     7,004,984,534      L1-dcache-loads                                               (31.15%)
+        25,518,858      L1-icache-load-misses                                         (31.19%)
+   <not supported>      L1-icache-loads                                             
+       271,122,597      cache-references                                              (24.97%)
+        38,768,937      cache-misses              #   14.299 % of all cache refs      (25.09%)
+           751,270      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.94%)
+     6,857,683,672      dTLB-loads                                                    (24.89%)
+           174,641      iTLB-load-misses          # 1903.03% of all iTLB cache accesses  (24.97%)
+             9,177      iTLB-loads                                                    (25.11%)
+       743,524,454      cycle_activity.stalls_total                                     (25.10%)
+       581,633,421      cycle_activity.stalls_mem_any                                     (25.12%)
+         1,113,997      mem_load_retired.l3_miss                                      (25.04%)
+     7,613,898,720      cycles                                                        (25.03%)
+     3,940,659,642      branches                                                      (25.02%)
+    28,809,593,633      instructions              #    3.78  insn per cycle           (31.23%)
+        12,081,438      mem_load_retired.l2_miss                                      (31.22%)
+
+       6.973579661 seconds time elapsed
+
+       1.653274000 seconds user
+       0.191771000 seconds sys
+
+
+# started on Tue Nov 15 16:53:44 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       529,070,092      L1-dcache-load-misses     #    6.87% of all L1-dcache accesses  (31.18%)
+     7,706,626,965      L1-dcache-loads                                               (31.25%)
+        31,512,165      L1-icache-load-misses                                         (31.35%)
+   <not supported>      L1-icache-loads                                             
+       304,345,591      cache-references                                              (25.11%)
+        47,228,559      cache-misses              #   15.518 % of all cache refs      (25.03%)
+           832,874      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.10%)
+     7,683,328,151      dTLB-loads                                                    (25.16%)
+           198,237      iTLB-load-misses          # 1756.80% of all iTLB cache accesses  (24.97%)
+            11,284      iTLB-loads                                                    (24.91%)
+       857,524,388      cycle_activity.stalls_total                                     (24.83%)
+       646,708,813      cycle_activity.stalls_mem_any                                     (24.79%)
+         1,179,047      mem_load_retired.l3_miss                                      (25.08%)
+     8,418,929,603      cycles                                                        (25.03%)
+     4,322,294,129      branches                                                      (24.97%)
+    31,265,944,472      instructions              #    3.71  insn per cycle           (31.18%)
+        12,763,644      mem_load_retired.l2_miss                                      (31.25%)
+
+       4.169014466 seconds time elapsed
+
+       1.800750000 seconds user
+       0.207987000 seconds sys
+
+
+2 8
+# started on Tue Nov 15 16:54:57 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       447,492,920      L1-dcache-load-misses     #    5.55% of all L1-dcache accesses  (31.28%)
+     8,066,380,401      L1-dcache-loads                                               (31.23%)
+        28,811,930      L1-icache-load-misses                                         (31.18%)
+   <not supported>      L1-icache-loads                                             
+       298,919,123      cache-references                                              (25.04%)
+        81,671,474      cache-misses              #   27.322 % of all cache refs      (25.12%)
+           810,153      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.01%)
+     8,021,194,504      dTLB-loads                                                    (25.10%)
+           188,936      iTLB-load-misses          # 1949.80% of all iTLB cache accesses  (25.00%)
+             9,690      iTLB-loads                                                    (24.90%)
+       867,314,645      cycle_activity.stalls_total                                     (24.99%)
+       693,151,538      cycle_activity.stalls_mem_any                                     (24.96%)
+         1,889,997      mem_load_retired.l3_miss                                      (24.92%)
+     6,291,742,422      cycles                                                        (25.00%)
+     1,092,317,344      branches                                                      (25.06%)
+    18,028,903,937      instructions              #    2.87  insn per cycle           (31.26%)
+        13,898,211      mem_load_retired.l2_miss                                      (31.21%)
+
+      13.157305694 seconds time elapsed
+
+       1.415554000 seconds user
+       0.186691000 seconds sys
+
+
+# started on Tue Nov 15 16:55:11 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       502,481,117      L1-dcache-load-misses     #    5.75% of all L1-dcache accesses  (31.19%)
+     8,743,233,341      L1-dcache-loads                                               (31.26%)
+        36,593,891      L1-icache-load-misses                                         (31.39%)
+   <not supported>      L1-icache-loads                                             
+       314,963,080      cache-references                                              (24.97%)
+        90,275,421      cache-misses              #   28.662 % of all cache refs      (25.01%)
+           884,364      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.97%)
+     8,873,566,059      dTLB-loads                                                    (24.93%)
+           195,416      iTLB-load-misses          # 2351.86% of all iTLB cache accesses  (24.91%)
+             8,309      iTLB-loads                                                    (25.07%)
+       855,686,940      cycle_activity.stalls_total                                     (25.12%)
+       736,699,872      cycle_activity.stalls_mem_any                                     (25.06%)
+         1,844,625      mem_load_retired.l3_miss                                      (25.16%)
+     6,823,286,242      cycles                                                        (24.88%)
+     1,175,283,836      branches                                                      (24.84%)
+    19,066,030,874      instructions              #    2.79  insn per cycle           (31.27%)
+        14,604,500      mem_load_retired.l2_miss                                      (31.24%)
+
+       5.225925948 seconds time elapsed
+
+       1.519210000 seconds user
+       0.197001000 seconds sys
+
+
+# started on Tue Nov 15 16:55:17 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       564,570,284      L1-dcache-load-misses     #    5.66% of all L1-dcache accesses  (30.94%)
+     9,983,540,324      L1-dcache-loads                                               (30.94%)
+        38,260,054      L1-icache-load-misses                                         (31.25%)
+   <not supported>      L1-icache-loads                                             
+       366,148,228      cache-references                                              (25.21%)
+       103,296,757      cache-misses              #   28.212 % of all cache refs      (25.21%)
+           979,698      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.34%)
+     9,697,579,151      dTLB-loads                                                    (25.21%)
+           196,428      iTLB-load-misses          # 1861.52% of all iTLB cache accesses  (25.08%)
+            10,552      iTLB-loads                                                    (25.03%)
+     1,015,804,465      cycle_activity.stalls_total                                     (24.90%)
+       741,747,065      cycle_activity.stalls_mem_any                                     (24.96%)
+         1,824,081      mem_load_retired.l3_miss                                      (24.99%)
+     7,443,063,345      cycles                                                        (25.03%)
+     1,299,088,299      branches                                                      (24.96%)
+    21,596,727,658      instructions              #    2.90  insn per cycle           (31.20%)
+        16,081,092      mem_load_retired.l2_miss                                      (30.95%)
+
+       4.849107183 seconds time elapsed
+
+       1.564207000 seconds user
+       0.286795000 seconds sys
+
+
+# started on Tue Nov 15 16:55:23 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       469,308,131      L1-dcache-load-misses     #    5.91% of all L1-dcache accesses  (31.22%)
+     7,942,464,653      L1-dcache-loads                                               (31.24%)
+        30,101,824      L1-icache-load-misses                                         (31.22%)
+   <not supported>      L1-icache-loads                                             
+       308,368,080      cache-references                                              (25.19%)
+        84,281,682      cache-misses              #   27.332 % of all cache refs      (25.24%)
+           798,888      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.21%)
+     7,984,314,830      dTLB-loads                                                    (25.03%)
+           189,906      iTLB-load-misses          # 1628.70% of all iTLB cache accesses  (24.98%)
+            11,660      iTLB-loads                                                    (24.91%)
+       850,464,588      cycle_activity.stalls_total                                     (24.84%)
+       702,014,265      cycle_activity.stalls_mem_any                                     (25.08%)
+         1,344,442      mem_load_retired.l3_miss                                      (24.91%)
+     6,370,479,632      cycles                                                        (24.95%)
+     1,081,574,578      branches                                                      (24.98%)
+    17,729,193,635      instructions              #    2.78  insn per cycle           (31.17%)
+         7,689,685      mem_load_retired.l2_miss                                      (31.00%)
+
+       7.215919519 seconds time elapsed
+
+       1.308469000 seconds user
+       0.216832000 seconds sys
+
+
+# started on Tue Nov 15 16:55:31 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       476,685,420      L1-dcache-load-misses     #    5.63% of all L1-dcache accesses  (31.12%)
+     8,460,850,065      L1-dcache-loads                                               (31.47%)
+        32,813,920      L1-icache-load-misses                                         (31.25%)
+   <not supported>      L1-icache-loads                                             
+       312,302,906      cache-references                                              (25.10%)
+        98,811,891      cache-misses              #   31.640 % of all cache refs      (25.05%)
+           828,723      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.13%)
+     8,344,948,847      dTLB-loads                                                    (25.21%)
+           175,069      iTLB-load-misses          # 1557.69% of all iTLB cache accesses  (25.12%)
+            11,239      iTLB-loads                                                    (25.21%)
+       906,070,972      cycle_activity.stalls_total                                     (24.94%)
+       716,809,254      cycle_activity.stalls_mem_any                                     (24.82%)
+         1,542,199      mem_load_retired.l3_miss                                      (24.82%)
+     6,691,775,654      cycles                                                        (24.71%)
+     1,146,225,150      branches                                                      (24.85%)
+    18,728,933,963      instructions              #    2.80  insn per cycle           (31.07%)
+        12,801,594      mem_load_retired.l2_miss                                      (31.20%)
+
+       4.603630222 seconds time elapsed
+
+       1.276185000 seconds user
+       0.242021000 seconds sys
+
+
+# started on Tue Nov 15 16:55:36 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       594,812,400      L1-dcache-load-misses     #    5.74% of all L1-dcache accesses  (31.27%)
+    10,371,288,343      L1-dcache-loads                                               (31.24%)
+        42,782,108      L1-icache-load-misses                                         (31.29%)
+   <not supported>      L1-icache-loads                                             
+       378,508,983      cache-references                                              (25.04%)
+       129,396,307      cache-misses              #   34.186 % of all cache refs      (25.01%)
+         1,045,643      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.98%)
+    10,403,948,616      dTLB-loads                                                    (25.00%)
+           216,918      iTLB-load-misses          # 1856.54% of all iTLB cache accesses  (25.07%)
+            11,684      iTLB-loads                                                    (25.18%)
+     1,102,862,530      cycle_activity.stalls_total                                     (25.10%)
+       911,498,333      cycle_activity.stalls_mem_any                                     (25.04%)
+         2,016,585      mem_load_retired.l3_miss                                      (24.91%)
+     8,238,581,437      cycles                                                        (24.82%)
+     1,411,133,488      branches                                                      (24.87%)
+    22,974,450,970      instructions              #    2.79  insn per cycle           (31.14%)
+        18,731,240      mem_load_retired.l2_miss                                      (31.18%)
+
+       5.600048344 seconds time elapsed
+
+       1.472936000 seconds user
+       0.281483000 seconds sys
+
+
+# started on Tue Nov 15 16:55:42 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       548,861,383      L1-dcache-load-misses     #    5.43% of all L1-dcache accesses  (30.71%)
+    10,113,864,067      L1-dcache-loads                                               (30.83%)
+        38,134,842      L1-icache-load-misses                                         (30.96%)
+   <not supported>      L1-icache-loads                                             
+       375,395,042      cache-references                                              (24.92%)
+       129,931,344      cache-misses              #   34.612 % of all cache refs      (25.06%)
+           992,627      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.09%)
+     9,962,912,117      dTLB-loads                                                    (25.44%)
+           203,721      iTLB-load-misses          # 1966.80% of all iTLB cache accesses  (25.52%)
+            10,358      iTLB-loads                                                    (25.43%)
+     1,183,735,678      cycle_activity.stalls_total                                     (25.32%)
+       913,810,020      cycle_activity.stalls_mem_any                                     (25.06%)
+         2,439,991      mem_load_retired.l3_miss                                      (25.01%)
+     7,905,827,679      cycles                                                        (24.98%)
+     1,359,067,153      branches                                                      (24.84%)
+    22,367,028,604      instructions              #    2.83  insn per cycle           (31.03%)
+        17,541,821      mem_load_retired.l2_miss                                      (30.83%)
+
+       6.218633915 seconds time elapsed
+
+       1.432526000 seconds user
+       0.250156000 seconds sys
+
+
+# started on Tue Nov 15 16:55:49 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       588,409,172      L1-dcache-load-misses     #    5.73% of all L1-dcache accesses  (31.26%)
+    10,269,485,729      L1-dcache-loads                                               (31.29%)
+        42,829,802      L1-icache-load-misses                                         (31.23%)
+   <not supported>      L1-icache-loads                                             
+       366,337,052      cache-references                                              (25.01%)
+       123,412,895      cache-misses              #   33.688 % of all cache refs      (25.07%)
+         1,020,425      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.96%)
+    10,415,140,692      dTLB-loads                                                    (25.00%)
+           219,059      iTLB-load-misses          # 2731.75% of all iTLB cache accesses  (24.96%)
+             8,019      iTLB-loads                                                    (24.87%)
+     1,086,024,781      cycle_activity.stalls_total                                     (24.97%)
+       817,263,517      cycle_activity.stalls_mem_any                                     (24.97%)
+         1,800,825      mem_load_retired.l3_miss                                      (25.03%)
+     8,060,858,939      cycles                                                        (25.09%)
+     1,394,571,739      branches                                                      (25.05%)
+    22,672,644,463      instructions              #    2.81  insn per cycle           (31.29%)
+        18,445,292      mem_load_retired.l2_miss                                      (31.25%)
+
+       6.534869974 seconds time elapsed
+
+       1.558881000 seconds user
+       0.210545000 seconds sys
+
+
+# started on Tue Nov 15 16:55:56 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       575,411,597      L1-dcache-load-misses     #    5.65% of all L1-dcache accesses  (31.19%)
+    10,182,857,324      L1-dcache-loads                                               (31.12%)
+        39,862,204      L1-icache-load-misses                                         (31.48%)
+   <not supported>      L1-icache-loads                                             
+       367,679,620      cache-references                                              (25.31%)
+       113,511,568      cache-misses              #   30.872 % of all cache refs      (25.41%)
+         1,054,249      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.39%)
+    10,246,010,466      dTLB-loads                                                    (25.14%)
+           214,980      iTLB-load-misses          # 2093.69% of all iTLB cache accesses  (24.95%)
+            10,268      iTLB-loads                                                    (24.73%)
+     1,063,498,091      cycle_activity.stalls_total                                     (24.71%)
+       839,999,423      cycle_activity.stalls_mem_any                                     (24.67%)
+         2,037,937      mem_load_retired.l3_miss                                      (24.80%)
+     7,926,421,999      cycles                                                        (24.95%)
+     1,358,011,377      branches                                                      (24.91%)
+    22,268,555,169      instructions              #    2.81  insn per cycle           (31.16%)
+        17,237,124      mem_load_retired.l2_miss                                      (31.24%)
+
+       4.704847126 seconds time elapsed
+
+       1.594149000 seconds user
+       0.281959000 seconds sys
+
+
+# started on Tue Nov 15 16:56:02 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       594,775,574      L1-dcache-load-misses     #    5.66% of all L1-dcache accesses  (31.39%)
+    10,505,013,321      L1-dcache-loads                                               (31.34%)
+        39,392,412      L1-icache-load-misses                                         (31.38%)
+   <not supported>      L1-icache-loads                                             
+       379,945,247      cache-references                                              (25.06%)
+        94,396,143      cache-misses              #   24.845 % of all cache refs      (24.96%)
+         1,057,975      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.92%)
+    10,243,971,460      dTLB-loads                                                    (24.76%)
+           218,642      iTLB-load-misses          # 2084.29% of all iTLB cache accesses  (24.80%)
+            10,490      iTLB-loads                                                    (24.93%)
+     1,046,779,394      cycle_activity.stalls_total                                     (24.92%)
+       792,316,660      cycle_activity.stalls_mem_any                                     (24.93%)
+         2,019,688      mem_load_retired.l3_miss                                      (24.97%)
+     8,035,343,612      cycles                                                        (25.07%)
+     1,397,886,750      branches                                                      (25.13%)
+    23,174,514,954      instructions              #    2.88  insn per cycle           (31.42%)
+        18,147,043      mem_load_retired.l2_miss                                      (31.45%)
+
+       6.425135424 seconds time elapsed
+
+       1.834255000 seconds user
+       0.257723000 seconds sys
+
+3 8
+
+# started on Tue Nov 15 16:57:07 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+     1,091,388,677      L1-dcache-load-misses     #   10.31% of all L1-dcache accesses  (31.15%)
+    10,581,114,271      L1-dcache-loads                                               (31.17%)
+        31,085,162      L1-icache-load-misses                                         (31.20%)
+   <not supported>      L1-icache-loads                                             
+       419,584,582      cache-references                                              (25.03%)
+        54,640,079      cache-misses              #   13.022 % of all cache refs      (25.09%)
+         1,299,092      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.09%)
+    10,583,000,305      dTLB-loads                                                    (25.10%)
+           298,520      iTLB-load-misses          # 1790.44% of all iTLB cache accesses  (25.06%)
+            16,673      iTLB-loads                                                    (25.00%)
+     1,280,531,798      cycle_activity.stalls_total                                     (25.01%)
+       863,631,697      cycle_activity.stalls_mem_any                                     (25.02%)
+           356,351      mem_load_retired.l3_miss                                      (24.99%)
+    13,863,986,073      cycles                                                        (24.99%)
+     5,517,509,887      branches                                                      (24.96%)
+    40,390,692,642      instructions              #    2.91  insn per cycle           (31.20%)
+         4,236,645      mem_load_retired.l2_miss                                      (31.14%)
+
+      10.188465800 seconds time elapsed
+
+       2.752351000 seconds user
+       0.224171000 seconds sys
+
+
+# started on Tue Nov 15 16:57:49 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+     1,078,962,324      L1-dcache-load-misses     #   10.83% of all L1-dcache accesses  (31.16%)
+     9,958,784,155      L1-dcache-loads                                               (31.20%)
+        31,581,375      L1-icache-load-misses                                         (31.23%)
+   <not supported>      L1-icache-loads                                             
+       412,165,675      cache-references                                              (25.03%)
+        51,915,611      cache-misses              #   12.596 % of all cache refs      (25.07%)
+         1,131,987      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.01%)
+     9,940,244,438      dTLB-loads                                                    (25.03%)
+           302,928      iTLB-load-misses          # 1510.26% of all iTLB cache accesses  (25.01%)
+            20,058      iTLB-loads                                                    (25.06%)
+     1,272,281,195      cycle_activity.stalls_total                                     (25.06%)
+       703,138,557      cycle_activity.stalls_mem_any                                     (25.03%)
+           312,538      mem_load_retired.l3_miss                                      (25.02%)
+    13,071,087,948      cycles                                                        (25.00%)
+     5,161,784,138      branches                                                      (24.94%)
+    38,081,657,976      instructions              #    2.91  insn per cycle           (31.16%)
+         3,462,203      mem_load_retired.l2_miss                                      (31.17%)
+
+       6.126624973 seconds time elapsed
+
+       2.578716000 seconds user
+       0.222802000 seconds sys
+
+
+# started on Tue Nov 15 16:57:56 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+     1,064,337,757      L1-dcache-load-misses     #   10.75% of all L1-dcache accesses  (31.32%)
+     9,897,838,636      L1-dcache-loads                                               (31.23%)
+        30,257,783      L1-icache-load-misses                                         (31.30%)
+   <not supported>      L1-icache-loads                                             
+       406,767,575      cache-references                                              (25.04%)
+        49,835,115      cache-misses              #   12.251 % of all cache refs      (25.00%)
+         1,138,765      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.01%)
+     9,920,822,755      dTLB-loads                                                    (24.93%)
+           295,384      iTLB-load-misses          # 1728.71% of all iTLB cache accesses  (24.91%)
+            17,087      iTLB-loads                                                    (24.94%)
+     1,170,994,042      cycle_activity.stalls_total                                     (25.01%)
+       637,337,507      cycle_activity.stalls_mem_any                                     (25.05%)
+           331,480      mem_load_retired.l3_miss                                      (25.02%)
+    13,014,005,647      cycles                                                        (25.04%)
+     5,134,082,959      branches                                                      (24.98%)
+    37,944,027,054      instructions              #    2.92  insn per cycle           (31.24%)
+         3,319,293      mem_load_retired.l2_miss                                      (31.23%)
+
+       5.080847729 seconds time elapsed
+
+       2.576806000 seconds user
+       0.217562000 seconds sys
+
+
+# started on Tue Nov 15 16:58:03 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       958,135,201      L1-dcache-load-misses     #   10.77% of all L1-dcache accesses  (31.15%)
+     8,895,050,932      L1-dcache-loads                                               (31.22%)
+        25,816,305      L1-icache-load-misses                                         (31.23%)
+   <not supported>      L1-icache-loads                                             
+       319,931,864      cache-references                                              (25.05%)
+        47,923,249      cache-misses              #   14.979 % of all cache refs      (25.03%)
+         1,157,836      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.02%)
+     8,750,213,213      dTLB-loads                                                    (25.01%)
+           199,698      iTLB-load-misses          # 1835.12% of all iTLB cache accesses  (25.01%)
+            10,882      iTLB-loads                                                    (25.03%)
+     1,069,088,317      cycle_activity.stalls_total                                     (25.00%)
+       766,913,412      cycle_activity.stalls_mem_any                                     (25.02%)
+           340,205      mem_load_retired.l3_miss                                      (25.02%)
+    11,684,287,475      cycles                                                        (25.01%)
+     4,808,712,528      branches                                                      (25.01%)
+    34,469,346,623      instructions              #    2.95  insn per cycle           (31.24%)
+         3,412,984      mem_load_retired.l2_miss                                      (31.18%)
+
+       5.972355544 seconds time elapsed
+
+       2.329781000 seconds user
+       0.174289000 seconds sys
+
+
+# started on Tue Nov 15 16:58:10 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       949,497,462      L1-dcache-load-misses     #   10.88% of all L1-dcache accesses  (31.48%)
+     8,724,857,721      L1-dcache-loads                                               (31.37%)
+        25,824,132      L1-icache-load-misses                                         (31.40%)
+   <not supported>      L1-icache-loads                                             
+       340,618,650      cache-references                                              (25.05%)
+        46,353,355      cache-misses              #   13.609 % of all cache refs      (24.95%)
+         1,162,652      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.90%)
+     8,666,824,271      dTLB-loads                                                    (24.84%)
+           209,283      iTLB-load-misses          # 1001.83% of all iTLB cache accesses  (24.81%)
+            20,890      iTLB-loads                                                    (24.92%)
+     1,071,658,981      cycle_activity.stalls_total                                     (24.95%)
+       734,177,739      cycle_activity.stalls_mem_any                                     (24.99%)
+           322,511      mem_load_retired.l3_miss                                      (24.98%)
+    11,583,237,791      cycles                                                        (25.00%)
+     4,681,857,294      branches                                                      (25.00%)
+    33,723,367,282      instructions              #    2.91  insn per cycle           (31.26%)
+         3,172,512      mem_load_retired.l2_miss                                      (31.34%)
+
+       4.959347364 seconds time elapsed
+
+       2.266732000 seconds user
+       0.192234000 seconds sys
+
+
+# started on Tue Nov 15 16:58:15 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+     1,038,518,683      L1-dcache-load-misses     #   10.82% of all L1-dcache accesses  (31.29%)
+     9,595,318,612      L1-dcache-loads                                               (31.33%)
+        24,818,000      L1-icache-load-misses                                         (31.28%)
+   <not supported>      L1-icache-loads                                             
+       393,014,567      cache-references                                              (25.02%)
+        52,327,183      cache-misses              #   13.314 % of all cache refs      (25.02%)
+         1,218,079      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.97%)
+     9,613,311,846      dTLB-loads                                                    (25.01%)
+           182,521      iTLB-load-misses          # 1002.64% of all iTLB cache accesses  (25.07%)
+            18,204      iTLB-loads                                                    (25.02%)
+     1,237,914,825      cycle_activity.stalls_total                                     (24.99%)
+       806,782,579      cycle_activity.stalls_mem_any                                     (24.95%)
+           344,972      mem_load_retired.l3_miss                                      (24.91%)
+    12,673,243,891      cycles                                                        (24.93%)
+     5,106,649,179      branches                                                      (24.99%)
+    36,912,169,692      instructions              #    2.91  insn per cycle           (31.21%)
+         3,123,540      mem_load_retired.l2_miss                                      (31.24%)
+
+       4.724900406 seconds time elapsed
+
+       2.505797000 seconds user
+       0.207685000 seconds sys
+
+
+# started on Tue Nov 15 16:58:21 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+     1,135,022,109      L1-dcache-load-misses     #   10.91% of all L1-dcache accesses  (31.28%)
+    10,403,386,261      L1-dcache-loads                                               (31.33%)
+        31,271,400      L1-icache-load-misses                                         (31.27%)
+   <not supported>      L1-icache-loads                                             
+       430,933,925      cache-references                                              (25.00%)
+        55,830,373      cache-misses              #   12.956 % of all cache refs      (24.99%)
+         1,361,540      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.96%)
+    10,400,323,699      dTLB-loads                                                    (24.99%)
+           211,890      iTLB-load-misses          # 1281.85% of all iTLB cache accesses  (24.97%)
+            16,530      iTLB-loads                                                    (25.03%)
+     1,337,801,054      cycle_activity.stalls_total                                     (24.98%)
+       866,681,965      cycle_activity.stalls_mem_any                                     (24.97%)
+           364,347      mem_load_retired.l3_miss                                      (24.99%)
+    13,807,683,385      cycles                                                        (24.95%)
+     5,623,674,097      branches                                                      (25.01%)
+    40,140,002,716      instructions              #    2.91  insn per cycle           (31.26%)
+         3,841,453      mem_load_retired.l2_miss                                      (31.30%)
+
+       6.021101712 seconds time elapsed
+
+       2.711658000 seconds user
+       0.242354000 seconds sys
+
+
+# started on Tue Nov 15 16:58:28 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+     1,162,407,403      L1-dcache-load-misses     #   10.69% of all L1-dcache accesses  (31.25%)
+    10,878,626,747      L1-dcache-loads                                               (31.22%)
+        31,947,549      L1-icache-load-misses                                         (31.20%)
+   <not supported>      L1-icache-loads                                             
+       409,135,519      cache-references                                              (24.96%)
+        58,548,911      cache-misses              #   14.310 % of all cache refs      (25.02%)
+         1,338,637      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.11%)
+    10,857,155,325      dTLB-loads                                                    (25.07%)
+           263,939      iTLB-load-misses          # 1852.72% of all iTLB cache accesses  (25.07%)
+            14,246      iTLB-loads                                                    (25.06%)
+     1,364,338,109      cycle_activity.stalls_total                                     (24.94%)
+       852,811,781      cycle_activity.stalls_mem_any                                     (24.98%)
+           382,984      mem_load_retired.l3_miss                                      (24.96%)
+    14,320,535,853      cycles                                                        (24.94%)
+     5,800,002,718      branches                                                      (25.00%)
+    41,976,301,255      instructions              #    2.93  insn per cycle           (31.25%)
+         3,881,531      mem_load_retired.l2_miss                                      (31.23%)
+
+       9.373785453 seconds time elapsed
+
+       2.820523000 seconds user
+       0.240364000 seconds sys
+
+
+# started on Tue Nov 15 16:58:39 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       957,316,010      L1-dcache-load-misses     #   10.89% of all L1-dcache accesses  (31.10%)
+     8,792,697,565      L1-dcache-loads                                               (31.16%)
+        27,577,978      L1-icache-load-misses                                         (31.21%)
+   <not supported>      L1-icache-loads                                             
+       327,101,718      cache-references                                              (25.10%)
+        45,247,375      cache-misses              #   13.833 % of all cache refs      (25.16%)
+         1,144,009      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.16%)
+     8,794,582,198      dTLB-loads                                                    (25.18%)
+           253,813      iTLB-load-misses          # 1532.32% of all iTLB cache accesses  (25.11%)
+            16,564      iTLB-loads                                                    (25.05%)
+     1,008,599,981      cycle_activity.stalls_total                                     (25.00%)
+       754,475,145      cycle_activity.stalls_mem_any                                     (24.95%)
+           281,252      mem_load_retired.l3_miss                                      (24.89%)
+    11,507,842,648      cycles                                                        (24.92%)
+     4,631,769,147      branches                                                      (24.89%)
+    33,703,391,509      instructions              #    2.93  insn per cycle           (31.13%)
+         2,530,103      mem_load_retired.l2_miss                                      (31.10%)
+
+       4.450017483 seconds time elapsed
+
+       2.277124000 seconds user
+       0.180868000 seconds sys
+
+
+# started on Tue Nov 15 16:58:44 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       908,556,258      L1-dcache-load-misses     #   10.95% of all L1-dcache accesses  (31.29%)
+     8,295,645,129      L1-dcache-loads                                               (31.26%)
+        25,050,965      L1-icache-load-misses                                         (31.28%)
+   <not supported>      L1-icache-loads                                             
+       317,660,690      cache-references                                              (25.02%)
+        43,292,479      cache-misses              #   13.629 % of all cache refs      (25.04%)
+         1,027,612      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.02%)
+     8,218,029,314      dTLB-loads                                                    (25.05%)
+           211,003      iTLB-load-misses          # 2427.00% of all iTLB cache accesses  (25.04%)
+             8,694      iTLB-loads                                                    (24.99%)
+       950,126,718      cycle_activity.stalls_total                                     (24.96%)
+       653,630,931      cycle_activity.stalls_mem_any                                     (24.93%)
+           279,483      mem_load_retired.l3_miss                                      (24.88%)
+    10,868,675,640      cycles                                                        (24.97%)
+     4,379,551,759      branches                                                      (25.00%)
+    31,958,933,207      instructions              #    2.94  insn per cycle           (31.27%)
+         2,856,979      mem_load_retired.l2_miss                                      (31.27%)
+
+       4.263773927 seconds time elapsed
+
+       2.134926000 seconds user
+       0.179763000 seconds sys
+
+4 8
+# started on Tue Nov 15 16:59:55 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       895,349,443      L1-dcache-load-misses     #    8.35% of all L1-dcache accesses  (31.16%)
+    10,716,386,365      L1-dcache-loads                                               (31.05%)
+        40,861,453      L1-icache-load-misses                                         (31.03%)
+   <not supported>      L1-icache-loads                                             
+       381,784,919      cache-references                                              (25.01%)
+        49,351,010      cache-misses              #   12.926 % of all cache refs      (25.02%)
+         1,302,194      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.99%)
+    10,690,212,104      dTLB-loads                                                    (25.14%)
+           307,240      iTLB-load-misses          # 1596.80% of all iTLB cache accesses  (25.13%)
+            19,241      iTLB-loads                                                    (25.18%)
+     1,343,193,647      cycle_activity.stalls_total                                     (25.21%)
+     1,134,870,182      cycle_activity.stalls_mem_any                                     (24.99%)
+           356,742      mem_load_retired.l3_miss                                      (24.92%)
+    12,805,316,686      cycles                                                        (24.98%)
+     1,452,492,342      branches                                                      (25.01%)
+    24,283,254,676      instructions              #    1.90  insn per cycle           (31.23%)
+         6,864,025      mem_load_retired.l2_miss                                      (31.19%)
+
+       7.575268376 seconds time elapsed
+
+       2.466456000 seconds user
+       0.264558000 seconds sys
+
+
+# started on Tue Nov 15 17:00:04 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       843,226,637      L1-dcache-load-misses     #    8.03% of all L1-dcache accesses  (31.29%)
+    10,504,192,312      L1-dcache-loads                                               (31.06%)
+        37,623,951      L1-icache-load-misses                                         (31.18%)
+   <not supported>      L1-icache-loads                                             
+       373,552,954      cache-references                                              (25.12%)
+        47,029,425      cache-misses              #   12.590 % of all cache refs      (25.10%)
+         1,251,671      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.22%)
+    10,391,497,628      dTLB-loads                                                    (25.13%)
+           305,848      iTLB-load-misses          # 1628.24% of all iTLB cache accesses  (25.09%)
+            18,784      iTLB-loads                                                    (25.07%)
+     1,326,045,401      cycle_activity.stalls_total                                     (25.09%)
+     1,087,901,219      cycle_activity.stalls_mem_any                                     (25.03%)
+           399,147      mem_load_retired.l3_miss                                      (24.84%)
+    12,543,138,615      cycles                                                        (24.91%)
+     1,416,757,046      branches                                                      (24.81%)
+    23,679,865,953      instructions              #    1.89  insn per cycle           (31.04%)
+         8,260,571      mem_load_retired.l2_miss                                      (31.07%)
+
+       5.582557027 seconds time elapsed
+
+       2.433554000 seconds user
+       0.243176000 seconds sys
+
+
+# started on Tue Nov 15 17:00:10 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       850,162,239      L1-dcache-load-misses     #    8.10% of all L1-dcache accesses  (31.25%)
+    10,494,729,012      L1-dcache-loads                                               (31.46%)
+        37,230,956      L1-icache-load-misses                                         (31.40%)
+   <not supported>      L1-icache-loads                                             
+       364,588,274      cache-references                                              (25.29%)
+        52,877,470      cache-misses              #   14.503 % of all cache refs      (25.24%)
+         1,261,687      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.06%)
+    10,426,647,932      dTLB-loads                                                    (24.93%)
+           314,520      iTLB-load-misses          # 1568.21% of all iTLB cache accesses  (24.77%)
+            20,056      iTLB-loads                                                    (24.76%)
+     1,350,426,647      cycle_activity.stalls_total                                     (24.83%)
+     1,150,410,874      cycle_activity.stalls_mem_any                                     (24.87%)
+           424,699      mem_load_retired.l3_miss                                      (24.89%)
+    12,603,409,889      cycles                                                        (24.93%)
+     1,421,031,445      branches                                                      (24.95%)
+    23,763,009,198      instructions              #    1.89  insn per cycle           (31.15%)
+         7,596,491      mem_load_retired.l2_miss                                      (31.36%)
+
+       5.920567733 seconds time elapsed
+
+       2.433449000 seconds user
+       0.259086000 seconds sys
+
+
+# started on Tue Nov 15 17:00:17 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       930,582,564      L1-dcache-load-misses     #    8.71% of all L1-dcache accesses  (31.44%)
+    10,685,929,550      L1-dcache-loads                                               (31.39%)
+        42,929,290      L1-icache-load-misses                                         (31.39%)
+   <not supported>      L1-icache-loads                                             
+       399,364,536      cache-references                                              (25.11%)
+        48,885,525      cache-misses              #   12.241 % of all cache refs      (25.07%)
+         1,320,113      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.05%)
+    10,682,362,864      dTLB-loads                                                    (25.16%)
+           332,356      iTLB-load-misses          # 1651.29% of all iTLB cache accesses  (25.01%)
+            20,127      iTLB-loads                                                    (24.74%)
+     1,318,791,765      cycle_activity.stalls_total                                     (24.62%)
+     1,040,397,847      cycle_activity.stalls_mem_any                                     (24.66%)
+           261,981      mem_load_retired.l3_miss                                      (24.90%)
+    12,610,190,259      cycles                                                        (25.15%)
+     1,450,769,072      branches                                                      (25.07%)
+    24,070,392,458      instructions              #    1.91  insn per cycle           (31.30%)
+         4,637,509      mem_load_retired.l2_miss                                      (31.24%)
+
+       6.498301915 seconds time elapsed
+
+       2.417673000 seconds user
+       0.265109000 seconds sys
+
+
+# started on Tue Nov 15 17:00:24 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       815,318,706      L1-dcache-load-misses     #    8.73% of all L1-dcache accesses  (31.20%)
+     9,336,320,503      L1-dcache-loads                                               (31.08%)
+        35,307,692      L1-icache-load-misses                                         (31.06%)
+   <not supported>      L1-icache-loads                                             
+       355,807,918      cache-references                                              (24.82%)
+        45,311,100      cache-misses              #   12.735 % of all cache refs      (24.90%)
+         1,141,406      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.10%)
+     9,333,670,468      dTLB-loads                                                    (25.15%)
+           266,807      iTLB-load-misses          # 1531.88% of all iTLB cache accesses  (25.06%)
+            17,417      iTLB-loads                                                    (25.00%)
+     1,189,638,082      cycle_activity.stalls_total                                     (24.94%)
+       929,234,642      cycle_activity.stalls_mem_any                                     (24.94%)
+           295,142      mem_load_retired.l3_miss                                      (25.13%)
+    11,027,573,682      cycles                                                        (25.17%)
+     1,261,884,309      branches                                                      (25.06%)
+    20,989,229,447      instructions              #    1.90  insn per cycle           (31.28%)
+         4,626,603      mem_load_retired.l2_miss                                      (31.37%)
+
+       5.160434682 seconds time elapsed
+
+       2.143489000 seconds user
+       0.217845000 seconds sys
+
+
+# started on Tue Nov 15 17:00:31 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       789,225,456      L1-dcache-load-misses     #    8.43% of all L1-dcache accesses  (31.23%)
+     9,365,459,848      L1-dcache-loads                                               (31.34%)
+        35,210,991      L1-icache-load-misses                                         (31.00%)
+   <not supported>      L1-icache-loads                                             
+       340,846,110      cache-references                                              (24.86%)
+        42,531,232      cache-misses              #   12.478 % of all cache refs      (24.89%)
+         1,114,184      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.74%)
+     9,394,509,699      dTLB-loads                                                    (24.85%)
+           275,223      iTLB-load-misses          # 1303.63% of all iTLB cache accesses  (25.00%)
+            21,112      iTLB-loads                                                    (25.05%)
+     1,186,195,783      cycle_activity.stalls_total                                     (25.05%)
+       970,968,454      cycle_activity.stalls_mem_any                                     (25.15%)
+           298,927      mem_load_retired.l3_miss                                      (25.23%)
+    11,187,585,018      cycles                                                        (25.06%)
+     1,274,053,558      branches                                                      (25.24%)
+    21,144,944,320      instructions              #    1.89  insn per cycle           (31.36%)
+         5,872,468      mem_load_retired.l2_miss                                      (31.30%)
+
+       4.516499717 seconds time elapsed
+
+       2.170237000 seconds user
+       0.219421000 seconds sys
+
+
+# started on Tue Nov 15 17:00:36 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       684,842,190      L1-dcache-load-misses     #    8.61% of all L1-dcache accesses  (30.85%)
+     7,956,568,796      L1-dcache-loads                                               (30.93%)
+        29,705,393      L1-icache-load-misses                                         (31.10%)
+   <not supported>      L1-icache-loads                                             
+       286,839,188      cache-references                                              (24.88%)
+        36,598,465      cache-misses              #   12.759 % of all cache refs      (24.99%)
+           947,094      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.17%)
+     7,922,607,102      dTLB-loads                                                    (25.20%)
+           228,478      iTLB-load-misses          # 1342.25% of all iTLB cache accesses  (25.35%)
+            17,022      iTLB-loads                                                    (25.31%)
+       980,520,958      cycle_activity.stalls_total                                     (25.33%)
+       773,814,801      cycle_activity.stalls_mem_any                                     (25.16%)
+           259,722      mem_load_retired.l3_miss                                      (25.10%)
+     9,366,904,433      cycles                                                        (24.95%)
+     1,071,086,613      branches                                                      (24.74%)
+    17,851,599,911      instructions              #    1.91  insn per cycle           (30.99%)
+         3,701,250      mem_load_retired.l2_miss                                      (30.95%)
+
+       4.399850092 seconds time elapsed
+
+       1.814319000 seconds user
+       0.195754000 seconds sys
+
+
+# started on Tue Nov 15 17:00:41 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       950,575,411      L1-dcache-load-misses     #    8.61% of all L1-dcache accesses  (31.07%)
+    11,040,350,037      L1-dcache-loads                                               (31.10%)
+        41,097,288      L1-icache-load-misses                                         (31.43%)
+   <not supported>      L1-icache-loads                                             
+       396,531,754      cache-references                                              (24.89%)
+        49,704,418      cache-misses              #   12.535 % of all cache refs      (24.94%)
+         1,332,899      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (24.97%)
+    10,993,834,842      dTLB-loads                                                    (24.87%)
+           289,075      iTLB-load-misses          # 1208.56% of all iTLB cache accesses  (25.03%)
+            23,919      iTLB-loads                                                    (25.09%)
+     1,362,971,285      cycle_activity.stalls_total                                     (24.97%)
+     1,104,774,405      cycle_activity.stalls_mem_any                                     (24.93%)
+           310,343      mem_load_retired.l3_miss                                      (25.12%)
+    13,090,719,414      cycles                                                        (25.11%)
+     1,493,707,833      branches                                                      (25.03%)
+    24,915,592,611      instructions              #    1.90  insn per cycle           (31.36%)
+         5,211,550      mem_load_retired.l2_miss                                      (31.44%)
+
+       5.586188260 seconds time elapsed
+
+       2.526315000 seconds user
+       0.262422000 seconds sys
+
+
+# started on Tue Nov 15 17:00:47 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       832,366,074      L1-dcache-load-misses     #    8.47% of all L1-dcache accesses  (31.22%)
+     9,829,243,973      L1-dcache-loads                                               (31.37%)
+        37,753,959      L1-icache-load-misses                                         (31.41%)
+   <not supported>      L1-icache-loads                                             
+       364,053,123      cache-references                                              (25.13%)
+        43,575,875      cache-misses              #   11.970 % of all cache refs      (25.21%)
+         1,192,524      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.21%)
+     9,750,325,520      dTLB-loads                                                    (25.11%)
+           296,565      iTLB-load-misses          # 1574.71% of all iTLB cache accesses  (24.87%)
+            18,833      iTLB-loads                                                    (24.77%)
+     1,175,887,639      cycle_activity.stalls_total                                     (24.84%)
+       951,239,790      cycle_activity.stalls_mem_any                                     (24.93%)
+           307,619      mem_load_retired.l3_miss                                      (24.91%)
+    11,633,389,194      cycles                                                        (24.86%)
+     1,329,496,005      branches                                                      (24.85%)
+    22,110,859,328      instructions              #    1.90  insn per cycle           (31.13%)
+         5,424,057      mem_load_retired.l2_miss                                      (31.30%)
+
+       4.948078450 seconds time elapsed
+
+       2.254194000 seconds user
+       0.227936000 seconds sys
+
+
+# started on Tue Nov 15 17:00:53 2022
+
+
+ Performance counter stats for './server-optim -j 1 -s 1024 -p 2241':
+
+       859,244,369      L1-dcache-load-misses     #    8.66% of all L1-dcache accesses  (31.34%)
+     9,924,898,033      L1-dcache-loads                                               (31.38%)
+        36,676,593      L1-icache-load-misses                                         (31.24%)
+   <not supported>      L1-icache-loads                                             
+       363,570,412      cache-references                                              (24.94%)
+        43,996,358      cache-misses              #   12.101 % of all cache refs      (25.05%)
+         1,195,371      dTLB-load-misses          #    0.01% of all dTLB cache accesses  (25.00%)
+     9,931,691,876      dTLB-loads                                                    (24.91%)
+           288,688      iTLB-load-misses          # 1504.99% of all iTLB cache accesses  (24.83%)
+            19,182      iTLB-loads                                                    (24.78%)
+     1,204,877,756      cycle_activity.stalls_total                                     (24.78%)
+       977,014,984      cycle_activity.stalls_mem_any                                     (24.91%)
+           289,233      mem_load_retired.l3_miss                                      (25.01%)
+    11,857,190,338      cycles                                                        (25.09%)
+     1,352,518,825      branches                                                      (25.25%)
+    22,512,916,366      instructions              #    1.90  insn per cycle           (31.49%)
+         4,820,368      mem_load_retired.l2_miss                                      (31.50%)
+
+       5.057139895 seconds time elapsed
+
+       2.271165000 seconds user
+       0.254348000 seconds sys
+
+

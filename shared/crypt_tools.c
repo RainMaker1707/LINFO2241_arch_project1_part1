@@ -2,8 +2,7 @@
 #define FILE_SIZE 1024
 //#define FILE_SIZE 8
 
-#if OPTIM == 5
-    #pragma pack(1)
+#if OPTIM == 2
     struct data {
         uint32_t r;
         uint8_t nb_steps;
@@ -18,7 +17,7 @@
         uint32_t iline;
         uint16_t iline_key;
         uint8_t key_size;
-    };
+    }__attribute__((aligned;
 #endif
 
 
@@ -36,13 +35,12 @@ void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypt
                    for(int l=0 ; l<key_size ; l++){
                        for(int m=0 ; m<key_size ; m++){
                            encrypted_file[k*FILE_SIZE + l + j*key_size + i*key_size*FILE_SIZE] += key[k*key_size + m] * file[m*FILE_SIZE + l + j*key_size + i*key_size*FILE_SIZE];
-                           // printf("result[%u] += key[%u] * file[%u]\n",k*file_size + l + j*key_size + i*key_size*file_size,k*key_size + m,m*file_size + l + j*key_size + i*key_size*file_size);
                        }
                    }
                }
             }
         }
-    #elif OPTIM == 3
+    #elif OPTIM == 1
         // line * column, no unrolling
 //        printf("OPTIM 1\n");
         int nb_steps_per_dim = FILE_SIZE / key_size;
@@ -65,7 +63,53 @@ void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypt
                 }
             }
         }
-    #elif OPTIM == 4
+    #elif OPTIM == 2
+        // line * column, unrolling
+//        printf("OPTIM 1\n");
+        int nb_steps_per_dim = FILE_SIZE / key_size;
+        //Compute sub-matrices
+        for (int i = 0; i < nb_steps_per_dim ; i ++) {
+            int vstart = i * key_size;
+            for (int j = 0; j < nb_steps_per_dim; j++) {
+                int hstart = j * key_size;
+                //Do the sub-matrix multiplication
+                for (int ln = 0; ln < key_size; ln++) {
+                    int aline = (vstart + ln) * FILE_SIZE + hstart;
+                    for (int col = 0; col < key_size; col++) {
+                        int tot = 0;
+                        int k = 0;
+                        while (k < key_size) {
+                            int vline = (vstart + k) * FILE_SIZE + hstart;
+                            tot += key[ln * key_size + k] * file[vline + col];
+                            k++;
+                            vline = (vstart + k) * FILE_SIZE + hstart;
+                            tot += key[ln * key_size + k] * file[vline + col];
+                            k++;
+                            vline = (vstart + k) * FILE_SIZE + hstart;
+                            tot += key[ln * key_size + k] * file[vline + col];
+                            k++;
+                            vline = (vstart + k) * FILE_SIZE + hstart;
+                            tot += key[ln * key_size + k] * file[vline + col];
+                            k++;
+                            vline = (vstart + k) * FILE_SIZE + hstart;
+                            tot += key[ln * key_size + k] * file[vline + col];
+                            k++;
+                            vline = (vstart + k) * FILE_SIZE + hstart;
+                            tot += key[ln * key_size + k] * file[vline + col];
+                            k++;
+                            vline = (vstart + k) * FILE_SIZE + hstart;
+                            tot += key[ln * key_size + k] * file[vline + col];
+                            k++;
+                            vline = (vstart + k) * FILE_SIZE + hstart;
+                            tot += key[ln * key_size + k] * file[vline + col];
+                            k++;
+                        }
+                        encrypted_file[aline + col] = tot;
+                    }
+                }
+            }
+        }
+    #elif OPTIM == 2
         // line * line, no unrolling
 //        printf("OPTIM 2\n");
         int nb_steps_per_dim = FILE_SIZE / key_size;
@@ -87,7 +131,7 @@ void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypt
                 }
             }
         }
-    #elif OPTIM == 1
+    #elif OPTIM == 0
         // line * line, unrolling
 //        printf("OPTIM 2\n");
         int nb_steps_per_dim = FILE_SIZE / key_size;
@@ -126,7 +170,7 @@ void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypt
                 }
             }
         }
-    #elif OPTIM == 5
+    #elif OPTIM == 2
         // line * line, unrolling, struct for data
 //        printf("OPTIM 2\n");
         struct data dt;

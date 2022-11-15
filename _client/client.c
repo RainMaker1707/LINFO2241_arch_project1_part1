@@ -78,7 +78,7 @@ int thread_job(thread_args* args){
     // Send request
     written = write(sockfd, buff_request, sizeof(char)*request_size);
     if (written != request_size){
-        verbose("%d WRITTEN : %zd\nERROR : %s\n",sockfd,written, strerror(errno));
+        // verbose("%d WRITTEN : %zd\nERROR : %s\n",sockfd,written, strerror(errno));
         errno = 0;
     }
 
@@ -91,11 +91,11 @@ int thread_job(thread_args* args){
     if(!error) return EXIT_FAILURE;
     read_in = read(sockfd, error, sizeof(char)*1);
     if (read_in != 1){
-        verbose("%d READ IN 1 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
+        // verbose("%d READ IN 1 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
         errno = 0;
     }
     gettimeofday(&end, NULL);
-    verbose("%d Elapsed time between send and receive: %ld µs\n",sockfd,(((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
+    verbose("%ld\n",(((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
     if(*error != 0){
         fprintf(stderr, "Server send error code: %u\n", *error);
         return EXIT_FAILURE;
@@ -105,7 +105,7 @@ int thread_job(thread_args* args){
     read_in = read(sockfd, &file_size, sizeof(char)*4);
     file_size = ntohl(file_size);
     if (read_in != 4){
-        verbose("%d READ IN 2 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
+        // verbose("%d READ IN 2 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
         errno = 0;
     }
     if(file_size == 0){
@@ -121,7 +121,7 @@ int thread_job(thread_args* args){
         read_in += read(sockfd, encrypted_file+read_in, (sizeof(char)*file_size) - read_in);
     }
     if (read_in != file_size){
-        verbose("%d READ IN 3 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
+        // verbose("%d READ IN 3 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
         errno = 0;
     }
 
@@ -205,8 +205,8 @@ int main(int argc, char **argv){
         }
     }
 
-    verbose("Arguments:\n\tTarget IP: \t\t%s\n\tPort: \t\t\t%i\n\tKey size: \t\t%i\n\tRequest rate:"
-           "\t\t%i\n\tRequest time:\t\t%i\n",target_ip, port, key_size, request_rate, request_time);
+    // verbose("Arguments:\n\tTarget IP: \t\t%s\n\tPort: \t\t\t%i\n\tKey size: \t\t%i\n\tRequest rate:"
+    //           "\t\t%i\n\tRequest time:\t\t%i\n",target_ip, port, key_size, request_rate, request_time);
 
     struct sockaddr_in servaddr;
 
@@ -241,7 +241,7 @@ int main(int argc, char **argv){
         // printf("ELAPSED : %lu\n",current.tv_sec - start.tv_sec);
         if(current.tv_sec - start.tv_sec >= (long)request_time) {
             join_and_free_threads_list(thread_list);
-            verbose("Run out of time: %d s\n", request_time);
+            // verbose("Run out of time: %d s\n", request_time);
             verbose("Total threads number: %d\n", n);
             break;
         }
