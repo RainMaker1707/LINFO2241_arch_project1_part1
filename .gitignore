@@ -6,3 +6,5 @@ IDEA/
 client
 server
 data_visualization/__pycache__/
+
+output/

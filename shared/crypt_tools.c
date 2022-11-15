@@ -21,8 +21,8 @@
     };
 #endif
 
-
-void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypted_file){
+inline void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypted_file)__attribute__((always_inline));
+void inline encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypted_file){
     #if OPTIM == 2
         // First version, non opti at all, score 30
 //        printf("OPTIM 0\n");
@@ -175,6 +175,24 @@ void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypt
                 dt.m++;
             }
             dt.l++;
+        }
+    #else
+        ///TODO: optimised method to compute sub matrix
+        uint32_t loopN = FILE_SIZE / key_size;
+        uint32_t keyLineIndex = 0;
+        for(uint32_t line = 0; line < FILE_SIZE; line++){ // for all lines in the file
+            for(uint32_t subI = 0; subI < loopN; subI++){ // for each sub matrix in a line
+                uint32_t start = key_size * subI;
+                uint32_t end = start + key_size - 1;
+                // compute result for the whole line and sub matrix
+                uint32_t from = keyLineIndex * key_size;
+                for(uint32_t index = start; index < end; index++) { // for all number in the sub matrix line
+                    encrypted_file[index] += key[from + (index % key_size)] * file[index];
+                    if(line == 0) printf("%u ", encrypted_file[index]);
+                }
+            }
+            keyLineIndex++;
+            if(keyLineIndex == 8) keyLineIndex = 0; //faster than modulo
         }
     #endif
 }
