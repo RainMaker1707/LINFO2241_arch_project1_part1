@@ -40,7 +40,7 @@ void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypt
                }
             }
         }
-    #elif OPTIM == 1
+    #elif OPTIM == 2
         // line * column, no unrolling
 //        printf("OPTIM 1\n");
         int nb_steps_per_dim = FILE_SIZE / key_size;
@@ -131,7 +131,7 @@ void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypt
                 }
             }
         }
-    #elif OPTIM == 0
+    #elif OPTIM == 2
         // line * line, unrolling
 //        printf("OPTIM 2\n");
         int nb_steps_per_dim = FILE_SIZE / key_size;

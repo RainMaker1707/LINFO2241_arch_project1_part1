@@ -149,7 +149,7 @@ int main(int argc, char **argv){
                    }
                 }
             }
-        #elif OPTIM == 2
+        #elif OPTIM == 0
             // line * column, no unrolling
             int nb_steps_per_dim = FILE_SIZE / key_size;
             //Compute sub-matrices
@@ -237,7 +237,7 @@ int main(int argc, char **argv){
                     }
                 }
             }
-        #elif OPTIM == 0
+        #elif OPTIM == 2
             // line * line, unrolling
             int nb_steps_per_dim = FILE_SIZE / key_size;
             int vstart, hstart, iline, kline, r, j;
