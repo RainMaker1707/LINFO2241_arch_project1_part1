@@ -34,9 +34,9 @@ int main(int argc, char **argv){
     // Generation of 1000 files
     ARRAY_TYPE **files = (ARRAY_TYPE**)malloc(sizeof(void*)*1000);
     for(int i=0 ; i<1000 ; i++){
-        files[i] = (ARRAY_TYPE*)malloc(sizeof(ARRAY_TYPE)*file_size*file_size);
+        files[i] = (ARRAY_TYPE*)malloc(TOTAL_FILE_SIZE);
     }
-    for(int i=0 ; i<file_size*file_size ; i++){
+    for(int i=0 ; i<FILE_SIZE*FILE_SIZE ; i++){
         files[0][i] = i;
     }
 
@@ -276,11 +276,11 @@ int main(int argc, char **argv){
                 }
             }
         #elif OPTIM == 1
-            // line * line, unrolling, test full matrix
+            // line * line, unrolling, full line matrix
             int nb_steps_per_dim = FILE_SIZE / key_size;
             int vstart, hstart, iline, kline, r, j;
 
-            for(int l=0 ; l<nb_steps_per_dim ; l++){
+            for(int l=0 ; __builtin_expect(l<nb_steps_per_dim,1) ; l++){
                 vstart = l * key_size;
                 //Do the sub-matrix multiplication
                 for (int i=0; i<key_size; i++) {
@@ -289,7 +289,7 @@ int main(int argc, char **argv){
                         j = 0;
                         kline = (vstart + k)*FILE_SIZE;
                         r = key[i*key_size + k];
-                        while (j<FILE_SIZE) {
+                        while (__builtin_expect(j<FILE_SIZE,1)) {
                             encrypted_file[iline + j] += r * file[kline + j];
                             j++;
                             encrypted_file[iline + j] += r * file[kline + j];
@@ -306,6 +306,31 @@ int main(int argc, char **argv){
                             j++;
                             encrypted_file[iline + j] += r * file[kline + j];
                             j++;
+                        }
+                    }
+                }
+            }
+        #elif OPTIM == 2
+            int nb_steps = FILE_SIZE / key_size;
+            int vs;
+            for(int l = 0; l < nb_steps; l++) {
+                vs = l * key_size;
+                for (int i = 0; i < key_size; i++) {
+                    for (int k = 0; k < key_size; k++) {
+                        int iline = (vs+i) * FILE_SIZE;
+                        int kline = (vs+k) * FILE_SIZE;
+                        int r = key[i * key_size + k];
+                        int j = 0;
+                        while(j < FILE_SIZE){
+                            encrypted_file[iline + j] += r * file[kline + j];
+                            encrypted_file[iline + j + 1] += r * file[kline + j + 1];
+                            encrypted_file[iline + j + 2] += r * file[kline + j + 2];
+                            encrypted_file[iline + j + 3] += r * file[kline + j + 3];
+                            encrypted_file[iline + j + 4] += r * file[kline + j + 4];
+                            encrypted_file[iline + j + 5] += r * file[kline + j + 5];
+                            encrypted_file[iline + j + 6] += r * file[kline + j + 6];
+                            encrypted_file[iline + j + 7] += r * file[kline + j + 7];
+                            j+=8;
                         }
                     }
                 }

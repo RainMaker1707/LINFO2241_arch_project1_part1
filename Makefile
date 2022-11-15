@@ -1,7 +1,7 @@
 CFLAGS += -std=gnu99 -Wall -W -mno-sse2 -mno-avx -mno-avx2 -mno-avx512f -fno-unroll-loops -fno-tree-vectorize -O2 -lpthread
 
-server: _server/server.o shared/crypt_tools.o shared/verbose.o
-	@gcc -DOPTIM=0 shared/crypt_tools.o shared/verbose.o _server/server.o -o server $(CFLAGS)
+server: _server/server.o shared/verbose.o
+	@gcc -DOPTIM=0 shared/verbose.o _server/server.o -o server $(CFLAGS)
 
 server-optim: _server/server-optim.o shared/verbose.o
 	@gcc -DOPTIM=1 shared/verbose.o _server/server-optim.o -o server-optim $(CFLAGS)
