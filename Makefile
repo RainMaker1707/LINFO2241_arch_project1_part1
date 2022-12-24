@@ -2,14 +2,14 @@ CFLAGS += -std=gnu99 -Wall -W -O2 -mavx -march=native
 
 # Client build
 client: _client/client.o shared/crypt_tools.o shared/verbose.o
-	@gcc -DOPTIM=0 shared/verbose.o _client/client.o -o client $(CFLAGS)
+	@gcc -DOPTIM=0 shared/verbose.o _client/client.o -o client $(CFLAGS) -lpthread
 _client/client.o: _client/client.c
-	@gcc -DOPTIM=0 -c -o _client/client.o _client/client.c $(CFLAGS)
+	@gcc -DOPTIM=0 -c -o _client/client.o _client/client.c $(CFLAGS) -lpthread
 
 client-queue: _client/client-queue.o shared/crypt_tools.o shared/verbose.o
-	@gcc -DOPTIM=0 -DQ=1 shared/verbose.o _client/client.o -o client-queue $(CFLAGS)
+	@gcc -DOPTIM=0 -DQ=1 shared/verbose.o _client/client.o -o client-queue $(CFLAGS) -lpthread -lm
 _client/client-queue.o: _client/client.c
-	@gcc -DOPTIM=0 -DQ=1 -c -o _client/client.o _client/client.c $(CFLAGS)
+	@gcc -DOPTIM=0 -DQ=1 -c -o _client/client.o _client/client.c $(CFLAGS) -lpthread -lm
 
 # Server without optimisation build
 server: _server/server.o shared/crypt_tools.o shared/verbose.o
