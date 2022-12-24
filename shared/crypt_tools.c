@@ -1,29 +1,21 @@
 #include "crypt_tools.h"
-#define FILE_SIZE 1024
+#define FILE_SIZE 2048
 //#define FILE_SIZE 8
 
-#if OPTIM == 5
-    #pragma pack(1)
-    struct data {
-        uint32_t r;
-        uint8_t nb_steps;
-        uint8_t l;
-        uint8_t m;
-        uint8_t i;
-        uint8_t k;
-        uint8_t j;
-        uint16_t vstart;
-        uint16_t hstart;
-        uint32_t kline;
-        uint32_t iline;
-        uint16_t iline_key;
-        uint8_t key_size;
-    };
-#endif
+void print_array(uint32_t* array, int size){
+    printf("\n");
+    for(int i=0 ; i<size ; i++){
+        printf("[ ");
+        for(int j=0 ; j<size ; j++) {
+            printf("%u ",array[j+(i*size)]);
+        }
+        printf(" ]\n");
+    }
+}
 
 inline void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypted_file)__attribute__((always_inline));
-void inline encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypted_file){
-    #if OPTIM == 2
+inline void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* encrypted_file){
+    #if OPTIM == 10
         // First version, non opti at all, score 30
 //        printf("OPTIM 0\n");
         int nb_steps_per_dim = FILE_SIZE / key_size;
@@ -42,7 +34,7 @@ void inline encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* 
                }
             }
         }
-    #elif OPTIM == 3
+    #elif OPTIM == 30
         // line * column, no unrolling
 //        printf("OPTIM 1\n");
         int nb_steps_per_dim = FILE_SIZE / key_size;
@@ -65,9 +57,7 @@ void inline encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* 
                 }
             }
         }
-    #elif OPTIM == 4
-        // line * line, no unrolling
-//        printf("OPTIM 2\n");
+    #elif OPTIM == 40
         int nb_steps_per_dim = FILE_SIZE / key_size;
         //Compute sub-matrices
         for (int l=0; l<nb_steps_per_dim ; l++) {
@@ -89,38 +79,30 @@ void inline encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* 
         }
     #elif OPTIM == 1
         // line * line, unrolling
-//        printf("OPTIM 2\n");
         int nb_steps_per_dim = FILE_SIZE / key_size;
-        int vstart, hstart, iline, kline, r, j;
+        int vstart, hstart;
         //Compute sub-matrices
-        for (int l=0; l<nb_steps_per_dim ; l++) {
+        for (int l=0; l < nb_steps_per_dim ; l++) {
             vstart = l * key_size;
-            for (int m=0; m<nb_steps_per_dim; m++) {
+            for (int m=0; m < nb_steps_per_dim; m++) {
                 hstart = m * key_size;
                 //Do the sub-matrix multiplication
-                for (int i=0; i<key_size; i++) {
-                    iline = (vstart + i)*FILE_SIZE + hstart;
-                    for (int k=0 ; k<key_size; k++) {
-                        kline = (vstart + k)*FILE_SIZE + hstart;
-                        r = key[i*key_size + k];
-                        j = 0;
-                        while (j<key_size) {
+                for (int i=0; i < key_size; i++) {
+                    for (int k=0 ; k < key_size; k++) {
+                        int iline = (vstart + i) * FILE_SIZE + hstart;
+                        int kline = (vstart + k) * FILE_SIZE + hstart;
+                        int r = key[i * key_size + k];
+                        int j = 0;
+                        while (j < key_size) {
                             encrypted_file[iline + j] += r * file[kline + j];
-                            j++;
-                            encrypted_file[iline + j] += r * file[kline + j];
-                            j++;
-                            encrypted_file[iline + j] += r * file[kline + j];
-                            j++;
-                            encrypted_file[iline + j] += r * file[kline + j];
-                            j++;
-                            encrypted_file[iline + j] += r * file[kline + j];
-                            j++;
-                            encrypted_file[iline + j] += r * file[kline + j];
-                            j++;
-                            encrypted_file[iline + j] += r * file[kline + j];
-                            j++;
-                            encrypted_file[iline + j] += r * file[kline + j];
-                            j++;
+                            encrypted_file[iline + j + 1] += r * file[kline + j + 1];
+                            encrypted_file[iline + j + 2] += r * file[kline + j + 2];
+                            encrypted_file[iline + j + 3] += r * file[kline + j + 3];
+                            encrypted_file[iline + j + 4] += r * file[kline + j + 4];
+                            encrypted_file[iline + j + 5] += r * file[kline + j + 5];
+                            encrypted_file[iline + j + 6] += r * file[kline + j + 6];
+                            encrypted_file[iline + j + 7] += r * file[kline + j + 7];
+                            j += 8;
                         }
                     }
                 }
@@ -152,21 +134,14 @@ void inline encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* 
                         dt.j = 0;
                         while (dt.j<dt.key_size) {
                             encrypted_file[dt.iline + dt.j] += dt.r * file[dt.kline + dt.j];
-                            dt.j++;
-                            encrypted_file[dt.iline + dt.j] += dt.r * file[dt.kline + dt.j];
-                            dt.j++;
-                            encrypted_file[dt.iline + dt.j] += dt.r * file[dt.kline + dt.j];
-                            dt.j++;
-                            encrypted_file[dt.iline + dt.j] += dt.r * file[dt.kline + dt.j];
-                            dt.j++;
-                            encrypted_file[dt.iline + dt.j] += dt.r * file[dt.kline + dt.j];
-                            dt.j++;
-                            encrypted_file[dt.iline + dt.j] += dt.r * file[dt.kline + dt.j];
-                            dt.j++;
-                            encrypted_file[dt.iline + dt.j] += dt.r * file[dt.kline + dt.j];
-                            dt.j++;
-                            encrypted_file[dt.iline + dt.j] += dt.r * file[dt.kline + dt.j];
-                            dt.j++;
+                            encrypted_file[dt.iline + dt.j + 1] += dt.r * file[dt.kline + dt.j + 1];
+                            encrypted_file[dt.iline + dt.j + 2] += dt.r * file[dt.kline + dt.j + 2];
+                            encrypted_file[dt.iline + dt.j + 3] += dt.r * file[dt.kline + dt.j + 3];
+                            encrypted_file[dt.iline + dt.j + 4] += dt.r * file[dt.kline + dt.j + 4];
+                            encrypted_file[dt.iline + dt.j + 5] += dt.r * file[dt.kline + dt.j + 5];
+                            encrypted_file[dt.iline + dt.j + 6] += dt.r * file[dt.kline + dt.j + 6];
+                            encrypted_file[dt.iline + dt.j + 7] += dt.r * file[dt.kline + dt.j + 7];
+                            dt.j+=8;
                         }
                         dt.k++;
                     }
@@ -176,34 +151,5 @@ void inline encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* 
             }
             dt.l++;
         }
-    #else
-        ///TODO: optimised method to compute sub matrix
-        uint32_t loopN = FILE_SIZE / key_size;
-        uint32_t keyLineIndex = 0;
-        for(uint32_t line = 0; line < FILE_SIZE; line++){ // for all lines in the file
-            for(uint32_t subI = 0; subI < loopN; subI++){ // for each sub matrix in a line
-                uint32_t start = key_size * subI;
-                uint32_t end = start + key_size - 1;
-                // compute result for the whole line and sub matrix
-                uint32_t from = keyLineIndex * key_size;
-                for(uint32_t index = start; index < end; index++) { // for all number in the sub matrix line
-                    encrypted_file[index] += key[from + (index % key_size)] * file[index];
-                    if(line == 0) printf("%u ", encrypted_file[index]);
-                }
-            }
-            keyLineIndex++;
-            if(keyLineIndex == 8) keyLineIndex = 0; //faster than modulo
-        }
     #endif
-}
-
-void print_array(uint32_t* array, int size){
-    printf("\n");
-    for(int i=0 ; i<size ; i++){
-        printf("[ ");
-        for(int j=0 ; j<size ; j++) {
-            printf("%d ",array[j+(i*size)]);
-        }
-        printf(" ]\n");
-    }
 }
