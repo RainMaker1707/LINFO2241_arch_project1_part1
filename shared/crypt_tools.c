@@ -28,7 +28,6 @@ inline void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* 
                    for(int l=0 ; l<key_size ; l++){
                        for(int m=0 ; m<key_size ; m++){
                            encrypted_file[k*FILE_SIZE + l + j*key_size + i*key_size*FILE_SIZE] += key[k*key_size + m] * file[m*FILE_SIZE + l + j*key_size + i*key_size*FILE_SIZE];
-                           // printf("result[%u] += key[%u] * file[%u]\n",k*file_size + l + j*key_size + i*key_size*file_size,k*key_size + m,m*file_size + l + j*key_size + i*key_size*file_size);
                        }
                    }
                }
@@ -77,7 +76,7 @@ inline void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* 
                 }
             }
         }
-    #elif OPTIM == 1
+    #elif OPTIM == 2
         // line * line, unrolling
         int nb_steps_per_dim = FILE_SIZE / key_size;
         int vstart, hstart;
@@ -108,7 +107,7 @@ inline void encrypt_file(int key_size, uint32_t* key, uint32_t* file, uint32_t* 
                 }
             }
         }
-    #elif OPTIM == 5
+    #elif OPTIM == 2
         // line * line, unrolling, struct for data
 //        printf("OPTIM 2\n");
         struct data dt;
