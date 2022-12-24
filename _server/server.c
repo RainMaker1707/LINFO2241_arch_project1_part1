@@ -1,22 +1,14 @@
 #include "server.h"
-#define TOTAL_FILE_SIZE 4194304
+//#define TOTAL_FILE_SIZE 4194304
+#define FILE_NUMBER 1000
+#define ALI 8
 //#define TOTAL_FILE_SIZE 256
 
+
 int main(int argc, char **argv){
-//    verbose("Server starting...\n");
-
-//    #if OPTIM == 0
-//        printf("S OPTIM 0\n");
-//    #elif OPTIM == 1
-//        printf("S OPTIM 1\n");
-//    #else
-//        printf("S OPTIM unknown\n");
-//    #endif
-
     // Arguments parsing
     int file_size = 0;
     int port = 0;
-
     int opt;
     while((opt = getopt(argc, argv, "j:s:p:v")) != -1) {
         switch (opt) {
@@ -36,13 +28,13 @@ int main(int argc, char **argv){
                 return EXIT_FAILURE;
         }
     }
-
-//    verbose("Arguments:\n\tThread number: \t\t%i\n\tFile size: \t\t%i\n\tPort: \t\t\t%i\n",thread_n, file_size, port);
+    int TOTAL_FILE_SIZE = file_size*file_size;
+    verbose("Arguments:\n\tFile size: \t\t%i\n\tPort: \t\t\t%i\n", file_size, port);
 
     // Generation of 1000 files
-    ARRAY_TYPE **files = (ARRAY_TYPE**)malloc(sizeof(void*)*1000);
-    for(int i=0 ; i<1000 ; i++){
-        files[i] = (ARRAY_TYPE*)malloc(sizeof(ARRAY_TYPE)*file_size*file_size);
+    ARRAY_TYPE **files = (ARRAY_TYPE**)malloc(sizeof(void*)*FILE_NUMBER);
+    for(int i=0 ; i<FILE_NUMBER ; i++){
+        files[i] = (ARRAY_TYPE*) malloc(sizeof(ARRAY_TYPE)*file_size*file_size);
     }
     for(int i=0 ; i<file_size*file_size ; i++){
         files[0][i] = i;
@@ -55,7 +47,7 @@ int main(int argc, char **argv){
         fprintf(stderr,"Socket Error : socket creation failed.\n");
         return EXIT_FAILURE;
     }
-//    verbose("Socket successfully created\n");
+    verbose("Socket successfully created\n");
 
     // Socket option for multi-thread sharing
     int enable = 1;
@@ -73,14 +65,14 @@ int main(int argc, char **argv){
         fprintf(stderr, "Socket Error : socket binding failed.\n");
         return EXIT_FAILURE;
     }
-//    verbose("Socket binded\n");
+    verbose("Socket bind\n");
 
     // FIFO listening queue starting
     if (listen(socket_fd, 65535) != 0) {
         fprintf(stderr, "Socket Error : unable to listen to socket.\n");
         return EXIT_FAILURE;
     }
-//    verbose("Server listening\n");
+    verbose("Server listening\n");
 
     // Client structure and socket
     int client_sock_fd;
@@ -105,7 +97,6 @@ int main(int argc, char **argv){
             fprintf(stderr, "Socket Error : unable to accept client.\n");
             return EXIT_FAILURE;
         }
-
         // Get file index and key size from socket
         read_in = read(client_sock_fd, &file_index, sizeof(char) * 4);
         if (read_in == -1) {
@@ -114,7 +105,6 @@ int main(int argc, char **argv){
         }
         // Network byte order
         file_index = ntohl(file_index);
-
         read_in = read(client_sock_fd, &key_size, sizeof(char) * 4);
         if (read_in == -1) {
             fprintf(stderr, "Error on key size extracting\n");
@@ -133,17 +123,22 @@ int main(int argc, char **argv){
             return EXIT_FAILURE;
         }
         // Encrypt file
-        // print_array(files[file_index],file_size);
-        encrypt_file(key_size, key, files[file_index], encrypted_file);
+        #if OPTIM == 2 || OPTIM == 3
+            encrypt_file(key_size, key, files[file_index], encrypted_file, file_size); // server float
+        #else
+            encrypt_file(key_size, key, files[file_index], encrypted_file); // server uint
+        #endif
 //        print_array(encrypted_file, file_size);
         // print_array(key, key_size);
         err_code = 0;
-
         // Send response to client
         write(client_sock_fd, &err_code, sizeof(char));
         write(client_sock_fd, &total_file_size_network, sizeof(char)*4);
+        ssize_t written = 0;
         if (err_code == 0) {
-            write(client_sock_fd, encrypted_file, sizeof(char) * TOTAL_FILE_SIZE);
+            while ((unsigned long)written < (unsigned long)TOTAL_FILE_SIZE && written != -1) {
+                written += write(client_sock_fd, encrypted_file+written, (sizeof(ARRAY_TYPE)*TOTAL_FILE_SIZE)-written);
+            }
         }
 
         // Close connection
@@ -153,7 +148,7 @@ int main(int argc, char **argv){
     }
 
     // Free files
-    for (int i=0 ; i<1000 ; i++){
+    for (int i=0 ; i<FILE_NUMBER ; i++){
         free(files[i]);
     }
     free(files);

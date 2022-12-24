@@ -57,15 +57,12 @@ int thread_job(thread_args* args){
 //    int index = rand() % 1000;
     int index = 0;
     ARRAY_TYPE *key = (ARRAY_TYPE*)malloc(sizeof(ARRAY_TYPE)*key_size*key_size*sizeof(char));
-
+    if(!key) return EXIT_FAILURE;
 
     // To delete
     for(int i=0 ; i<key_size*key_size ; i++){
-        key[i] = i;
+        key[i] = (float)1;
     }
-
-
-    if(!key) return EXIT_FAILURE;
 
     // Preparing request buffer
     char *buff_request = (char*)malloc(sizeof(char)*request_size);
@@ -95,12 +92,11 @@ int thread_job(thread_args* args){
         errno = 0;
     }
     gettimeofday(&end, NULL);
-    verbose("%d Elapsed time between send and receive: %ld µs\n",sockfd,(((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
+    verbose("MAT: %ld\n", (((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
     if(*error != 0){
         fprintf(stderr, "Server send error code: %u\n", *error);
         return EXIT_FAILURE;
     }
-
     int file_size;
     read_in = read(sockfd, &file_size, sizeof(char)*4);
     file_size = ntohl(file_size);
@@ -112,13 +108,12 @@ int thread_job(thread_args* args){
         fprintf(stderr,"No file received: file size = 0\n");
         return EXIT_FAILURE;
     }
-
     // Get encrypted file from response (size sent by server is already multiplied by sizeof(ARRAY_TYPE)
-    char *encrypted_file = (char*)malloc(sizeof(char)*file_size);
+    float *encrypted_file = (float*)malloc(sizeof(float)*file_size);
     if(!encrypted_file) return EXIT_FAILURE;
     read_in = 0;
-    while ((unsigned long)read_in < sizeof(char)*file_size){
-        read_in += read(sockfd, encrypted_file+read_in, (sizeof(char)*file_size) - read_in);
+    while ((unsigned long)read_in < (unsigned long)file_size && read_in != -1){
+        read_in += read(sockfd, encrypted_file+read_in, (file_size) - read_in);
     }
     if (read_in != file_size){
         verbose("%d READ IN 3 : %zd\nERROR : %s\n",sockfd,read_in, strerror(errno));
@@ -127,7 +122,6 @@ int thread_job(thread_args* args){
 
     // close the socket
     close(sockfd);
-
     //garbage
     free(key);
     free(buff_request);
@@ -135,6 +129,13 @@ int thread_job(thread_args* args){
     free(encrypted_file);
 
     return EXIT_SUCCESS;
+}
+
+
+uint64_t ran_expo(double lambda){
+    double u;
+    u = rand() / (RAND_MAX + 1.0);
+    return -log(1- u) * 1000000000  / lambda;
 }
 
 
@@ -251,7 +252,13 @@ int main(int argc, char **argv){
         list_push(thread_list, id);
         n++;
         // handle request rate by sleeping interval
-        usleep((((float)1/(float)request_rate)*1000000));
+        #if Q == 1
+            uint32_t rate = ran_expo(request_rate);
+            verbose("EXP: %ld\n", rate);
+            usleep(rate/1000);
+        #else
+            usleep((((float)1/(float)request_rate)*1000000));
+        #endif
     }
     return EXIT_SUCCESS;
 }

@@ -15,9 +15,9 @@
 #include <unistd.h> // read(), write(), close()
 #include <pthread.h>
 #include <errno.h>
-#include "../shared/crypt_tools.h"
+#include <math.h>
 #include "../shared/verbose.h"
-#define ARRAY_TYPE uint32_t
+#define ARRAY_TYPE float
 
 typedef struct {
     int key_size;
@@ -38,7 +38,7 @@ typedef struct {
 } list;
 
 int thread_job(thread_args* args);
-
+uint64_t ran_expo(double lambda);
 list* list_init();
 void list_push(list *l, pthread_t* id);
 

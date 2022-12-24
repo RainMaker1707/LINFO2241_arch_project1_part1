@@ -14,9 +14,16 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <errno.h>
-#include "../shared/crypt_tools.h"
+#include <string.h>
+#include <x86intrin.h>
 #include "../shared/verbose.h"
+#if OPTIM == 0 || OPTIM == 1
+#include "../shared/crypt_tools.h"
 #define ARRAY_TYPE uint32_t
+#elif OPTIM == 2 || OPTIM == 3
+#include "../shared/float_crypt_tools.h"
+#define ARRAY_TYPE float
+#endif
 
 typedef struct {
     int socket_fd;
