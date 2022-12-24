@@ -1,12 +1,10 @@
 make clean
-make server-float server-float-avx client
+make server-queue client-queue
 
 
-./server-float -j 1 -s 1024 -p 1707 & PID=$!
+./server-queue -j 1 -s 1024 -p 1707 -v > output/server-queue.txt & PID=$!
 sleep 2s
-./client -r 10 -t 20 -k 8 127.0.0.1:1707 -v > server_float_output.txt
-kill -9 "${PID}"
-./server-float-avx -j 1 -s 1024 -p 1707 & PID2=$!
-sleep 2s
-./client -r 10 -t 20 -k 8 127.0.0.1:1707 -v > server_avx_output.txt
-kill -9 "${PID2}"
+./client-queue -r 10 -t 20 -k 8 127.0.0.1:1707 -v > output/client-queue.txt
+kill -2 "${PID}"
+
+make clean

@@ -15,6 +15,7 @@
 #include <sys/time.h>
 #include <errno.h>
 #include <string.h>
+#include <signal.h>
 #include <x86intrin.h>
 #include "../shared/verbose.h"
 #if OPTIM == 0 || OPTIM == 1

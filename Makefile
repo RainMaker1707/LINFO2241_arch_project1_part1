@@ -47,12 +47,21 @@ shared/float-encrypt-optim:
 server/server-float-optim:
 	@gcc -DOPTIM=3 -c -o _server/server-float-optim.o _server/server.c $(CFLAGS)
 
+
+# Optimised float version
+server-queue: shared/float-encrypt-queue server/server-float-queue shared/verbose.o
+	@gcc -DOPTIM=3 -DQ=1 shared/float_crypt_tools_optim.o shared/verbose.o _server/server-float-optim.o -o server-queue $(CFLAGS)
+shared/float-encrypt-queue:
+	@gcc -DOPTIM=3 -DQ=1 -c -o shared/float_crypt_tools_optim.o shared/float_crypt_tools.c $(CFLAGS)
+server/server-float-queue:
+	@gcc -DOPTIM=3 -DQ=1 -c -o _server/server-float-optim.o _server/server.c $(CFLAGS)
+
 # Cleaner
 clean:
-	@rm _server/server.o _server/server-optim.o shared/crypt_tools.o shared/crypt_tools-optim.o shared/verbose.o
-	@rm _server/server-float.o  _server/server-float-optim.o shared/float_crypt_tools.o shared/float_crypt_tools_optim.o
-	@rm server server-optim server-float server-float-avx
-	@rm _client/client.o client
+	@rm -f _server/server.o _server/server-optim.o shared/crypt_tools.o shared/crypt_tools-optim.o shared/verbose.o
+	@rm -f _server/server-float.o  _server/server-float-optim.o shared/float_crypt_tools.o shared/float_crypt_tools_optim.o
+	@rm -f server server-optim server-float server-float-avx
+	@rm -f _client/client.o client client-queue server-queue
 
 # Compressor
 NAME=archive.tar.gz

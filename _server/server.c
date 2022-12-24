@@ -4,8 +4,15 @@
 #define ALI 8
 //#define TOTAL_FILE_SIZE 256
 
+void intHandler(int sig){
+    sig = sig+1; //avoid warning
+    fflush(stdout);
+    exit(0);
+}
 
 int main(int argc, char **argv){
+    signal(SIGINT, intHandler);
+
     // Arguments parsing
     int file_size = 0;
     int port = 0;
@@ -97,6 +104,10 @@ int main(int argc, char **argv){
             fprintf(stderr, "Socket Error : unable to accept client.\n");
             return EXIT_FAILURE;
         }
+        #if Q == 1
+            struct timeval start, end;
+            gettimeofday(&start, NULL);
+        #endif
         // Get file index and key size from socket
         read_in = read(client_sock_fd, &file_index, sizeof(char) * 4);
         if (read_in == -1) {
@@ -140,6 +151,11 @@ int main(int argc, char **argv){
                 written += write(client_sock_fd, encrypted_file+written, (sizeof(ARRAY_TYPE)*TOTAL_FILE_SIZE)-written);
             }
         }
+
+        #if Q == 1
+            gettimeofday(&end, NULL);
+            verbose("%ld\n",(((end.tv_sec - start.tv_sec)*1000000)+(end.tv_usec - start.tv_usec)));
+        #endif
 
         // Close connection
         close(client_sock_fd);
