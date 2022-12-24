@@ -8,3 +8,5 @@ server
 data_visualization/__pycache__/
 
 output/
+
+.DS_Store
